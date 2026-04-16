@@ -1,0 +1,10 @@
+meshlib
+requests
+pymeshlab
+opencv-python
+scipy
+#open3d https://github.com/isl-org/Open3D/releases
+plotly
+rembg
+
+modelscope
