@@ -17,8 +17,9 @@
 #   - Preloaded ComfyUI bundle
 ################################################################################
 
-ARG REGISTRY=docker.io
-FROM ${REGISTRY}/yanwk/comfyui-boot:base-cu130-pt211-cache
+ARG REGISTRY=registry.cn-hangzhou.aliyuncs.com
+ARG REPO_NAME=eazycloud
+FROM ${REGISTRY}/${REPO_NAME}/comfyui-boot:base-cu130-pt211-cache
 
 LABEL maintainer="wangweihong <wangweihong2018@qq.com>"
 
@@ -74,7 +75,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -r /builder-scripts/additional-pak.txt
 RUN bash /builder-scripts/preload-nodes.sh
 
-# trellis2 wheels
+# 3d trellis2 wheels
 RUN --mount=type=cache,target=/root/.cache/pip \
     # 修复了 o_voxel 漏掉 pip install 的问题
     # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换

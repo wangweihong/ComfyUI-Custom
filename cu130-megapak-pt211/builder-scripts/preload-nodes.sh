@@ -14,6 +14,6 @@ cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 # 3d trellies.2
 gcs https://github.com/visualbruno/ComfyUI-Trellis2.git
-# gcs https://github.com/example/node1.git
+
 
 echo "[INFO] Additional custom nodes downloaded successfully"
