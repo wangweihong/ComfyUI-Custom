@@ -1,10 +1,10 @@
-meshlib
-requests
-pymeshlab
-opencv-python
-scipy
-#open3d https://github.com/isl-org/Open3D/releases
-plotly
-rembg
 
-modelscope
+
+# whisper 不支持cu130
+#faster-whisper==1.0.3
+#soundfile
+
+
+
+# whiterabbit
+torchlanc

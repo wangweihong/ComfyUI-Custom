@@ -50,6 +50,45 @@ else
     source /root/user-scripts/pre-start.sh
 fi ;
 
+# Copy workflows and subgraphs from bundle if not disabled
+# cd /root
+# if [ -z "${DISABLE_PRESETS:-}" ]; then
+#     echo "[INFO] Copying workflows and subgraphs from bundle..."
+#     mkdir -p /root/ComfyUI/user/default/workflows
+    
+#     # Copy workflows
+#     if [ -d "/default-comfyui-bundle/workflows" ]; then
+#         rsync --archive --ignore-existing --include="*/" --include="*.json" --exclude="*" "/default-comfyui-bundle/workflows/" "/root/ComfyUI/user/default/workflows/"
+#         echo "[INFO] Copied workflows from bundle."
+#     fi
+    
+#     # Copy subgraphs
+#     if [ -d "/default-comfyui-bundle/subgraphs" ]; then
+#         rsync --archive --ignore-existing --include="*/" --include="*.json" --exclude="*""/default-comfyui-bundle/subgraphs/" "/root/ComfyUI/user/default/workflows/"
+#         echo "[INFO] Copied subgraphs from bundle."
+#     fi
+
+#     # Copy audio assets
+#     if [ -d "/default-comfyui-bundle/assets" ]; then
+#         rsync --archive --ignore-existing "/default-comfyui-bundle/assets/audios/" "/root/ComfyUI/input/"
+#         echo "[INFO] Copied audio assets from bundle."
+#     fi
+
+#     # Copy video assets
+#     if [ -d "/default-comfyui-bundle/assets" ]; then
+#         rsync --archive --ignore-existing "/default-comfyui-bundle/assets/videos/" "/root/ComfyUI/input/"
+#         echo "[INFO] Copied video assets from bundle."
+#     fi
+
+#     # Copy image assets
+#     if [ -d "/default-comfyui-bundle/assets" ]; then
+#         rsync --archive --ignore-existing "/default-comfyui-bundle/assets/images/" "/root/ComfyUI/input/"
+#         echo "[INFO] Copied image assets from bundle."  
+#     fi
+# else
+#     echo "[INFO] Presets disabled, skipping workflow, assets and subgraph copy."
+# fi
+
 echo "[INFO] Starting ComfyUI..."
 echo "########################################"
 

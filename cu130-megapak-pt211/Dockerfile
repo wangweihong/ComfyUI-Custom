@@ -56,24 +56,14 @@ RUN cd /usr/local/lib/python3.13/site-packages/comfyui_manager/legacy/ \
     && grep -n "run(default_cache_update())" ./manager_server.py \
     && sed -i '/run(default_cache_update())/d' ./manager_server.py
 
+
+# # copy presets to default-comfyui-bundle/
+# COPY _presets/assets/. /default-comfyui-bundle/assets/ 
+# COPY _presets/subgraphs/. /default-comfyui-bundle/subgraphs/
+# COPY _presets/workflows/. /default-comfyui-bundle/workflows/
+
 ################################################################################
 # add additional custom nodes and its dependencies
-
-# add additional-pak.txt to constraints.txt
-# Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
-RUN pip list --format=freeze \
-        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
-        > /builder-scripts/constraints.txt \
-    && echo "Pinned PyTorch version:" \
-    && cat /builder-scripts/constraints.txt
-    
-# Additional custom nodes and dependencies
-RUN bash /builder-scripts/generate-nodes.sh
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
-        -c /builder-scripts/constraints.txt \
-        -r /builder-scripts/additional-pak.txt
-RUN bash /builder-scripts/preload-nodes.sh
 
 # 3d trellis2 wheels
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -90,9 +80,49 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     && pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
         https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260413/nvdiffrec_render-0.0.0-cp313-cp313-linux_x86_64.whl 
 
+# index tts 2 wheels
+RUN --mount=type=cache,target=/root/.cache/pip \
+    # 修复了 o_voxel 漏掉 pip install 的问题
+    # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
+    pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
+        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260419/descript_audiotools-0.7.4-py2.py3-none-any.whl
+
+# SD POSE
+RUN --mount=type=cache,target=/root/.cache/pip \
+    # 修复了 o_voxel 漏掉 pip install 的问题
+    # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
+    pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
+        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260420/mmcv-2.1.0-py2.py3-none-any.whl
+
+# add additional-pak.txt to constraints.txt
+# Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
+RUN pip list --format=freeze \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        > /builder-scripts/constraints.txt \
+    && echo "Pinned PyTorch version:" \
+    && cat /builder-scripts/constraints.txt
+
+# Additional custom nodes and dependencies
+RUN bash /builder-scripts/generate-nodes.sh
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install \
+        -c /builder-scripts/constraints.txt \
+        -r /builder-scripts/additional-pak.txt \
+        -r /builder-scripts/pak1.txt
+RUN bash /builder-scripts/preload-nodes.sh
+
+# fix Qwen3-tts /bin/sh: line 1: sox: command not found
+#RUN dnf install -y sox
+## fix seedvr2 video upscaler报错
+RUN dnf install -y openssl
+
+################################################################################\
+# Remove unused node
+# This node will cause ltx error when running,report "RuntimeError: The size of tensor a (28160) must match the size of tensor b (3619968) at non-singleton dimension 2"
+RUN rm -rf /default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI_smZNodes
+
 
 ################################################################################
-
 RUN df -h \
     && du -ah /root \
     && fd -H . /root/ --min-depth 1 -x rm -rfv

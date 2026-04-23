@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-env 
 function git_force_sync () {
     git_remote_url=$(git -C "$1" remote get-url origin)
 

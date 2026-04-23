@@ -6,6 +6,7 @@ echo '# Your Additional Custom Nodes Dependencies' > additional-pak.txt
 array=(
     # 3d trellies.2
     https://github.com/visualbruno/ComfyUI-Trellis2/raw/refs/heads/main/requirements.txt
+  
 )
 
 for line in "${array[@]}";

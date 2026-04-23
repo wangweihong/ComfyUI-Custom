@@ -19,6 +19,10 @@ MODEL_PARENT ?= /root/ComfyUI
 # Test Port
 TEST_PORT ?= 8188
 
+# Qwen2511-edit设置--fast会出现花图
+# --disable-xformers可以解决xformers无法在cu130-py3.11-pt211 5090架构运行的问题
+#CLI_ARGS ?= " --disable-xformers"
+
 # Component definitions
 COMPONENTS = cu130-megapak-pt211 
 # base-cu130-pt211-cache xpu rocm rocm6 nightly rocm7 xpu-cn cu130-slim-v2 cu130-slim cu128-megapak-pt28 cu128-slim cu128-megapak cu126-slim cu128-megapak-pt29 cu126-megapak cpu base-cu130-pt211 base-cu130-slim-s2 base-cu130-slim-s1 base-cu130-devel base-rocm72-pt211
@@ -138,7 +142,7 @@ clean-$(1):
 		for img in $$$$OLD_IMAGES; do docker rmi $$$$img 2>/dev/null || true; done; \
 	fi
 
-test-$(1): build-$(1)
+test-$(1): 
 	@COMPONENT_TAG="$(call get_component_tag,$(1))"; \
 	TEST_DIR=$$$$(mktemp -d -t comfyui-test-XXXXXX); \
 	echo "Using temporary directory: $$$$TEST_DIR"; \
@@ -155,7 +159,7 @@ test-$(1): build-$(1)
 	         $$$$TEST_DIR/storage-user/user-profile \
 	         $$$$TEST_DIR/storage-user/user-scripts; \
 	echo "Starting container for component: $(1)..."; \
-	docker run -it --rm \
+	docker run -it  \
 	  --name comfyui-test-$$$$COMPONENT_TAG \
 	  --gpus 1 \
 	  -p $(TEST_PORT):8188 \
@@ -167,17 +171,18 @@ test-$(1): build-$(1)
 	  -v "$(MODEL_PARENT)/u2net:/root/.u2net" \
 	  -v "$(MODEL_PARENT)/hf-hub:/root/.cache/huggingface/hub" \
 	  -v "$(MODEL_PARENT)/torch-hub:/root/.cache/torch/hub" \
-	  -v "$$$$TEST_DIR/storage-user/input:/root/ComfyUI/input" \
+	  -v "/home/wwhvw/codespace/comfyui-ecosystem/assets:/root/ComfyUI/input" \
 	  -v "$$$$TEST_DIR/storage-user/output:/root/ComfyUI/output" \
-	  -v "$$$$TEST_DIR/storage-user/user-profile:/root/ComfyUI/user" \
+	  -v /home/wwhvw/codespace/comfyui-ecosystem/workflows:/root/ComfyUI/user/default/workflows \
+      -v /home/wwhvw/codespace/comfyui-ecosystem/subgraphs:/root/ComfyUI/user/default/subgraphs \
 	  -v "$$$$TEST_DIR/storage-user/user-scripts:/root/user-scripts" \
 	  -e HTTP_PROXY=$(HTTP_PROXY) \
 	  -e HTTPS_PROXY=$(HTTPS_PROXY) \
 	  -e HF_ENDPOINT="https://hf-mirror.com" \
-	  -e CLI_ARGS="--fast" \
+	  -e CLI_ARGS=$(CLI_ARGS) \
 	  $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG; \
 	echo "Cleaning up temporary directory: $$$$TEST_DIR"; \
-	rm -rf $$$$TEST_DIR
+	#rm -rf $$$$TEST_DIR
 endef
 
 $(foreach comp,$(COMPONENTS),$(eval $(call COMPONENT_TEMPLATE,$(comp))))

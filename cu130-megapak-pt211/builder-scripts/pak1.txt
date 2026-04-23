@@ -1,0 +1,29 @@
+# essential
+modelscope
+
+# 3d triels
+meshlib
+requests
+pymeshlab
+opencv-python
+scipy
+#open3d https://github.com/isl-org/Open3D/releases
+plotly
+rembg
+
+# Qwen3-VL-Instruct
+qwen-vl-utils
+
+# Qwen3 tts
+sox
+
+# index tts2
+munch
+
+# fish tts
+ormsgpack
+resampy>=0.4.3
+pyrootutils>=1.0.4
+
+# sd oo
+munkres
