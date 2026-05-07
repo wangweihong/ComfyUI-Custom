@@ -1,0 +1,34 @@
+{
+  "display_name": "h264-mp4邵氏风格去黄硬光版",
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "video_filters": [
+    "eq=contrast=1.16:brightness=0.002:saturation=1.10:gamma=0.97",
+    "colorbalance=rs=0.006:gs=-0.002:bs=-0.006:rm=0.018:gm=0.000:bm=-0.010:rh=0.025:gh=0.003:bh=-0.015",
+    "unsharp=5:5:0.24:5:5:0.00"
+  ],
+  "output_args": [
+    "-preset",
+    "medium",
+    "-color_range",
+    "tv",
+    "-colorspace",
+    "bt709",
+    "-color_primaries",
+    "bt709",
+    "-color_trc",
+    "bt709"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.10) saturate(1.10) brightness(1.00) sepia(0.02) hue-rotate(-1deg)",
+    "background": "rgba(28,18,16,0.72)",
+    "border": "1px solid rgba(255,176,92,0.30)",
+    "box_shadow": "0 0 0 1px rgba(255,110,72,0.07) inset, 0 0 16px rgba(255,168,88,0.06)"
+  }
+}

@@ -1,0 +1,1014 @@
+{
+  "id": "4bb2d1a6-d7dc-4ca3-9257-7e33c8559c54",
+  "revision": 0,
+  "last_node_id": 38,
+  "last_link_id": 58,
+  "nodes": [
+    {
+      "id": 7,
+      "type": "MMAudioModelLoader",
+      "pos": [
+        1962.1457770695488,
+        2122.308442455599
+      ],
+      "size": [
+        438.219970703125,
+        83.87998962402344
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "label": "mmaudio_model",
+          "name": "mmaudio_model",
+          "type": "MMAUDIO_MODEL",
+          "slot_index": 0,
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MMAudioModelLoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "mmaudio_large_44k_v2_fp32.safetensors",
+        "fp32"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "VHS_VideoInfo",
+      "pos": [
+        1785.7956967294776,
+        2637.285570801673
+      ],
+      "size": [
+        262,
+        206
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "视频信息",
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "link": 13
+        }
+      ],
+      "outputs": [
+        {
+          "label": "初始FPS🟨",
+          "name": "source_fps🟨",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "label": "初始帧数🟨",
+          "name": "source_frame_count🟨",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "初始时长🟨",
+          "name": "source_duration🟨",
+          "type": "FLOAT",
+          "links": null
+        },
+        {
+          "label": "初始宽度🟨",
+          "name": "source_width🟨",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "初始高度🟨",
+          "name": "source_height🟨",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "选中FPS🟦",
+          "name": "loaded_fps🟦",
+          "type": "FLOAT",
+          "slot_index": 5,
+          "links": [
+            55
+          ]
+        },
+        {
+          "label": "选中帧数🟦",
+          "name": "loaded_frame_count🟦",
+          "type": "INT",
+          "slot_index": 6,
+          "links": null
+        },
+        {
+          "label": "选中时长🟦",
+          "name": "loaded_duration🟦",
+          "type": "FLOAT",
+          "slot_index": 7,
+          "links": [
+            56
+          ]
+        },
+        {
+          "label": "选中宽度🟦",
+          "name": "loaded_width🟦",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "选中高度🟦",
+          "name": "loaded_height🟦",
+          "type": "INT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_VideoInfo",
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "1.7.7",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": {}
+    },
+    {
+      "id": 31,
+      "type": "AudioMerge",
+      "pos": [
+        3216.7459854139133,
+        2266.396256160477
+      ],
+      "size": [
+        270,
+        78
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio1",
+          "type": "AUDIO",
+          "link": 41
+        },
+        {
+          "name": "audio2",
+          "type": "AUDIO",
+          "link": 45
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            43
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AudioMerge"
+      },
+      "widgets_values": [
+        "add"
+      ]
+    },
+    {
+      "id": 36,
+      "type": "easy cleanGpuUsed",
+      "pos": [
+        4384.643813600615,
+        2112.5096795832937
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "type": "*",
+          "link": 51
+        }
+      ],
+      "outputs": [
+        {
+          "label": "输出",
+          "name": "output",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy cleanGpuUsed"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "MMAudioFeatureUtilsLoader",
+      "pos": [
+        1755.9005198438895,
+        2313.8897031804013
+      ],
+      "size": [
+        487.2332763671875,
+        154
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "bigvgan_vocoder_model",
+          "name": "bigvgan_vocoder_model",
+          "shape": 7,
+          "type": "VOCODER_MODEL",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "mmaudio_featureutils",
+          "name": "mmaudio_featureutils",
+          "type": "MMAUDIO_FEATUREUTILS",
+          "links": [
+            52
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MMAudioFeatureUtilsLoader",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        "mmaudio_vae_44k_fp32.safetensors",
+        "mmaudio_synchformer_fp32.safetensors",
+        "apple_DFN5B-CLIP-ViT-H-14-384_fp32.safetensors",
+        "44k",
+        "fp32"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "MMAudioSampler",
+      "pos": [
+        2625.2568314173336,
+        2377.286206665125
+      ],
+      "size": [
+        499.7736147163291,
+        453.0729517611612
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "mmaudio_model",
+          "name": "mmaudio_model",
+          "type": "MMAUDIO_MODEL",
+          "link": 2
+        },
+        {
+          "label": "feature_utils",
+          "name": "feature_utils",
+          "type": "MMAUDIO_FEATUREUTILS",
+          "link": 53
+        },
+        {
+          "label": "images",
+          "name": "images",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": 57
+        },
+        {
+          "name": "duration",
+          "type": "FLOAT",
+          "widget": {
+            "name": "duration"
+          },
+          "link": 58
+        }
+      ],
+      "outputs": [
+        {
+          "label": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "slot_index": 0,
+          "links": [
+            44
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MMAudioSampler",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "duration": true
+          },
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": [
+        20,
+        25,
+        7,
+        140228562917957,
+        "randomize",
+        "realistic subway interior ambience, public transit atmosphere, train movement rumble, rail clatter, subtle carriage vibration, low mechanical hum, air conditioning noise, occasional door rattle, soft cabin ambience, distant movement sounds, cloth rustle, light body movement, natural indoor transportation soundscape, documentary field recording, realistic urban transit environment, no clear foreground events, no performance, no musicality, pure environmental ambience",
+        "human voice, speaking, dialogue, conversation, interview, narration, announcer, reporter, host, vocals, singing, melody, music, musical, harmony, chord, rhythm, beat, drums, bass, synth, piano, guitar, strings, orchestra, song, speech, talking, whispering, laughing, shouting, crowd chanting, clear footsteps, foley performance, cinematic stingers, sound design hits",
+        false,
+        true
+      ]
+    },
+    {
+      "id": 37,
+      "type": "easy cleanGpuUsed",
+      "pos": [
+        2382.396559739115,
+        2334.6198165750566
+      ],
+      "size": [
+        140,
+        26
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "输入任何",
+          "name": "anything",
+          "type": "*",
+          "link": 52
+        }
+      ],
+      "outputs": [
+        {
+          "label": "输出",
+          "name": "output",
+          "type": "*",
+          "links": [
+            53
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "easy cleanGpuUsed"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 32,
+      "type": "AudioAdjustVolume",
+      "pos": [
+        3217.79613889195,
+        2539.9429338501736
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 44
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            45
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AudioAdjustVolume"
+      },
+      "widgets_values": [
+        -6
+      ]
+    },
+    {
+      "id": 28,
+      "type": "NanFengPersonMask",
+      "pos": [
+        1387.2843315430744,
+        2502.747452119475
+      ],
+      "size": [
+        270,
+        274
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 37
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            39
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NanFengPersonMask"
+      },
+      "widgets_values": [
+        "insightface",
+        0,
+        960,
+        48,
+        false,
+        0.55,
+        0,
+        0.28,
+        0.35,
+        8
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VHS_LoadVideo",
+      "pos": [
+        886.1856079328369,
+        2221.0256786602254
+      ],
+      "size": [
+        417.6617736816406,
+        543.0891281415832
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "批次管理",
+          "name": "meta_batch",
+          "shape": 7,
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "图像",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            5,
+            37
+          ]
+        },
+        {
+          "label": "帧计数",
+          "name": "frame_count",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "label": "音频",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            41
+          ]
+        },
+        {
+          "label": "视频信息",
+          "name": "video_info",
+          "type": "VHS_VIDEOINFO",
+          "slot_index": 3,
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_LoadVideo",
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "1.7.7",
+        "ue_properties": {
+          "widget_ue_connectable": {},
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": {
+        "video": "NF_video_00038.mp4",
+        "force_rate": 24,
+        "custom_width": 0,
+        "custom_height": 0,
+        "frame_load_cap": 241,
+        "skip_first_frames": 0,
+        "select_every_nth": 1,
+        "format": "AnimateDiff",
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {
+            "frame_load_cap": 241,
+            "skip_first_frames": 0,
+            "force_rate": 24,
+            "filename": "NF_video_00038.mp4",
+            "type": "input",
+            "format": "video/mp4",
+            "select_every_nth": 1
+          },
+          "muted": false
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "VHS_VideoCombine",
+      "pos": [
+        3612.145777069549,
+        2082.308442455599
+      ],
+      "size": [
+        648.7454223632812,
+        693.8099822998047
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "label": "图像",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 5
+        },
+        {
+          "label": "音频",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 43
+        },
+        {
+          "label": "批次管理",
+          "name": "meta_batch",
+          "shape": 7,
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        },
+        {
+          "label": "保存元数据",
+          "name": "save_metadata",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_metadata"
+          },
+          "link": null
+        },
+        {
+          "label": "修剪音频",
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "trim_to_audio"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "文件名",
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "links": [
+            51
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VHS_VideoCombine",
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "1.7.7",
+        "ue_properties": {
+          "widget_ue_connectable": {
+            "frame_rate": true
+          },
+          "version": "7.5.2",
+          "input_ue_unconnectable": {}
+        }
+      },
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "audio/MMaudio",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": false,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": true,
+        "videopreview": {
+          "hidden": false,
+          "paused": false,
+          "params": {
+            "filename": "MMaudio_00011-audio.mp4",
+            "subfolder": "audio",
+            "type": "output",
+            "format": "video/h264-mp4",
+            "frame_rate": 25,
+            "workflow": "MMaudio_00011.png",
+            "fullpath": "E:\\ComfyUIV9\\ComfyUI\\output\\audio\\MMaudio_00011-audio.mp4"
+          },
+          "muted": false
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "ReservedVRAMSetter",
+      "pos": [
+        2204.391767178967,
+        2581.8734954893516
+      ],
+      "size": [
+        285.7896484375,
+        218
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "anything",
+          "shape": 7,
+          "type": "*",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "type": "*",
+          "links": [
+            54
+          ]
+        },
+        {
+          "name": "SEED",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "name": "Reserved(GB)",
+          "type": "FLOAT",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ReservedVRAMSetter"
+      },
+      "widgets_values": [
+        2,
+        "auto",
+        1019168999118265,
+        "randomize",
+        0,
+        true
+      ]
+    },
+    {
+      "id": 9,
+      "type": "ImageScaleBy",
+      "pos": [
+        1788.902451840678,
+        2492.4299382219
+      ],
+      "size": [
+        270,
+        82
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 39
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScaleBy"
+      },
+      "widgets_values": [
+        "nearest-exact",
+        0.3
+      ]
+    },
+    {
+      "id": 38,
+      "type": "NanFengMMAudioAlign",
+      "pos": [
+        2432.0,
+        2360.0
+      ],
+      "size": [
+        320,
+        190
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 54
+        },
+        {
+          "name": "source_fps",
+          "type": "FLOAT",
+          "link": 55
+        },
+        {
+          "name": "target_duration",
+          "type": "FLOAT",
+          "widget": {
+            "name": "target_duration"
+          },
+          "link": 56
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            57
+          ]
+        },
+        {
+          "name": "duration",
+          "type": "FLOAT",
+          "slot_index": 1,
+          "links": [
+            58
+          ]
+        },
+        {
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "slot_index": 2,
+          "links": null
+        },
+        {
+          "name": "frame_count",
+          "type": "INT",
+          "slot_index": 3,
+          "links": null
+        },
+        {
+          "name": "debug",
+          "type": "STRING",
+          "slot_index": 4,
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "NanFengMMAudioAlign"
+      },
+      "widgets_values": [
+        24,
+        0,
+        25,
+        "blend"
+      ]
+    }
+  ],
+  "links": [
+    [
+      2,
+      7,
+      0,
+      2,
+      0,
+      "MMAUDIO_MODEL"
+    ],
+    [
+      5,
+      3,
+      0,
+      5,
+      0,
+      "IMAGE"
+    ],
+    [
+      12,
+      9,
+      0,
+      8,
+      0,
+      "IMAGE"
+    ],
+    [
+      13,
+      3,
+      3,
+      4,
+      0,
+      "VHS_VIDEOINFO"
+    ],
+    [
+      37,
+      3,
+      0,
+      28,
+      0,
+      "IMAGE"
+    ],
+    [
+      39,
+      28,
+      0,
+      9,
+      0,
+      "IMAGE"
+    ],
+    [
+      41,
+      3,
+      2,
+      31,
+      0,
+      "AUDIO"
+    ],
+    [
+      43,
+      31,
+      0,
+      5,
+      1,
+      "AUDIO"
+    ],
+    [
+      44,
+      2,
+      0,
+      32,
+      0,
+      "AUDIO"
+    ],
+    [
+      45,
+      32,
+      0,
+      31,
+      1,
+      "AUDIO"
+    ],
+    [
+      51,
+      5,
+      0,
+      36,
+      0,
+      "VHS_FILENAMES"
+    ],
+    [
+      52,
+      6,
+      0,
+      37,
+      0,
+      "MMAUDIO_FEATUREUTILS"
+    ],
+    [
+      53,
+      37,
+      0,
+      2,
+      1,
+      "MMAUDIO_FEATUREUTILS"
+    ],
+    [
+      54,
+      8,
+      0,
+      38,
+      0,
+      "IMAGE"
+    ],
+    [
+      55,
+      4,
+      5,
+      38,
+      1,
+      "FLOAT"
+    ],
+    [
+      56,
+      4,
+      7,
+      38,
+      2,
+      "FLOAT"
+    ],
+    [
+      57,
+      38,
+      0,
+      2,
+      2,
+      "IMAGE"
+    ],
+    [
+      58,
+      38,
+      1,
+      2,
+      3,
+      "FLOAT"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.630394086312858,
+      "offset": [
+        -379.46307834437016,
+        -1724.9509505481096
+      ]
+    },
+    "frontendVersion": "1.42.8",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}

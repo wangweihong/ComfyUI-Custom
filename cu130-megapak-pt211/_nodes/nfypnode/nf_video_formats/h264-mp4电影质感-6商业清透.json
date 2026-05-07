@@ -1,0 +1,34 @@
+{
+  "display_name": "h264-mp4电影质感-6商业清透",
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "video_filters": [
+    "eq=contrast=1.03:brightness=0.005:saturation=1.01:gamma=1.00",
+    "colorbalance=rs=0.006:gs=0.000:bs=-0.012:rm=0.004:gm=0.000:bm=-0.010:rh=0.012:gh=0.004:bh=-0.002",
+    "curves=red='0/0.01 0.25/0.24 0.50/0.52 0.75/0.79 1/1':green='0/0.01 0.25/0.24 0.50/0.51 0.75/0.78 1/1':blue='0/0.015 0.25/0.24 0.50/0.50 0.75/0.76 1/1'"
+  ],
+  "output_args": [
+    "-preset",
+    "medium",
+    "-color_range",
+    "tv",
+    "-colorspace",
+    "bt709",
+    "-color_primaries",
+    "bt709",
+    "-color_trc",
+    "bt709"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.03) saturate(1.02) brightness(1.02)",
+    "background": "rgba(18,22,28,0.70)",
+    "border": "1px solid rgba(150,194,222,0.30)",
+    "box_shadow": "0 0 0 1px rgba(255,170,120,0.07) inset"
+  }
+}

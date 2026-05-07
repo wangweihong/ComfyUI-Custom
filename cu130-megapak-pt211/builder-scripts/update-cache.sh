@@ -29,6 +29,8 @@ git fetch --all --tags --prune --prune-tags
 git reset --hard '@{upstream}'
 
 # Using stable version (has a release tag)
+## 注意：在 Git 的逻辑里，Tag（标签）是一个静态的“快照指针”。它一旦打在某个具体的 Commit（提交）上，除非你手动删除并重新打标签，否则它永远指向那个时间点的代码状态。
+## 之后提交的commit, 不会被包含在标签的分支中。即使这些commit早于这个边
 git reset --hard "$(git tag -l 'v*' | sort -V | tail -1)"
 
 echo "########################################"

@@ -1,0 +1,15 @@
+{
+  "token": "ba3fc2c87bbeb370c39fad40",
+  "source_signature": "6554edb86182b5441118c852bc422007ee7bf9a6",
+  "source_master_path": "E:\\ComfyUIV9\\ComfyUI\\custom_nodes\\nfypnode\\_nf_video_preview_cache\\ba3fc2c87bbeb370c39fad40_source.mp4",
+  "preview_fullpath": "E:\\ComfyUIV9\\ComfyUI\\output\\NF_video_00109.mp4",
+  "preview_subfolder": "",
+  "preview_filename": "NF_video_00109.mp4",
+  "frame_rate": 24.0,
+  "has_audio": true,
+  "written_frames": 145,
+  "last_format": "h264-mp4电影质感-4冷青夜感",
+  "last_crf": 25,
+  "last_extension": "mp4",
+  "updated_at": "2026-04-13T01:13:17"
+}

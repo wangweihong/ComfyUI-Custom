@@ -1,0 +1,27 @@
+{
+  "display_name": "h264-mp4",
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "video_filters": [
+    "scale=out_color_matrix=bt709"
+  ],
+  "output_args": [
+    "-preset", "medium",
+    "-color_range", "tv",
+    "-colorspace", "bt709",
+    "-color_primaries", "bt709",
+    "-color_trc", "bt709"
+  ],
+  "preview_style": {
+    "filter": "none",
+    "background": "rgba(12,16,24,0.65)",
+    "border": "1px solid rgba(110,150,255,0.28)",
+    "box_shadow": "0 0 0 1px rgba(110,150,255,0.05) inset"
+  }
+}

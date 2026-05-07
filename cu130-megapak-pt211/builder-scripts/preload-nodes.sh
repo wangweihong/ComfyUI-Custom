@@ -83,4 +83,53 @@ gcs https://github.com/BigStationW/ComfyUI-NAG.git
 ## 图像缩放到总像素级别
 gcs https://github.com/BigStationW/ComfyUi-Scale-Image-to-Total-Pixels-Advanced.git
 
+
+# klein edit composite
+## https://www.reddit.com/r/StableDiffusion/comments/1rstals/how_do_you_handle_klein_edits_colour_drift/
+## 可以在某些程度上解决klein编辑的色彩漂移问题。见klein人物换装-v3
+gcs https://github.com/supermansundies/comfyui-klein-edit-composite.git
+gcs https://github.com/BigStationW/ComfyUi-TextEncodeEditAdvanced.git
+
+
+# yedp action director
+## https://www.linkedin.com/posts/sedpid_hello-everyone-i-just-pushed-a-big-update-activity-7432741280683642882-3eio    
+gcs https://github.com/yedp123/ComfyUI-Yedp-Action-Director.git
+
+# Qwen3.5
+## 依赖transformers > 5.0
+gcs https://github.com/WingeD123/ComfyUI_QwenVL_PromptCaption.git
+
+# ltx2.3 VR 360外扩
+gcs https://github.com/Burgstall-labs/ComfyUI-EquirectProjector.git
+
+# Sapiens2
+## 一系列高分辨率 Transformer 模型，在 10 亿张人体图像上进行预训练，在各种以人为中心的任务（姿态估计、身体部位分割、表面法线和点图）中取得了最先进的性能。
+gcs https://github.com/kijai/ComfyUI-Sapiens2.git
+
+# SKBundle
+## 一系列自定义节点，包括：
+## 1. PaintPro: 使用压感画笔、橡皮擦和形状工具直接在节点上绘制和遮罩
+## 2. Lens Flare: 为图像添加逼真的镜头光晕效果。您可以自定义光晕类型、大小、旋转和强度等设置
+## 3. TitlePlus: 为视频添加标题，支持自定义字体、颜色、大小等设置
+## 4. SeamlessTexture: 为图像添加无缝纹理效果，使图像看起来更真实
+## 5. AspectRatioPlus: 高级宽高比调整节点，支持自定义宽高比
+gcs https://github.com/SKBv0/ComfyUI_SKBundle.git
+
+# ZML Lora Power
+gcs https://github.com/zml-w/ComfyUI-ZML-Image.git
+
+# ltx prompt relay
+gcs https://github.com/kijai/ComfyUI-PromptRelay.git
+
+# 音效
+gcs https://github.com/Saganaki22/ComfyUI-Woosh.git
+
+
+# Reference video
+gcs https://github.com/alisson-anjos/ComfyUI-BFSNodes.git
+gcs https://github.com/lucafoscili/lf-nodes.git
+
+# 很好用的加载视频,支持加载时裁减
+gcs https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git
+
 echo "[INFO] Additional custom nodes downloaded successfully"

@@ -8,3 +8,6 @@
 
 # whiterabbit
 torchlanc
+
+# LF_EMPTYIMAGE
+svgwrite

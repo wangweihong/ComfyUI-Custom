@@ -1,0 +1,28 @@
+{
+  "display_name": "h264-mp4青橙",
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "video_filters": [
+    "eq=contrast=1.12:brightness=0.010:saturation=1.16:gamma=0.98",
+    "colorbalance=rs=-0.02:gs=0.01:bs=0.08:rm=0.04:gm=0.01:bm=-0.03:rh=0.08:gh=0.02:bh=-0.06"
+  ],
+  "output_args": [
+    "-preset", "medium",
+    "-color_range", "tv",
+    "-colorspace", "bt709",
+    "-color_primaries", "bt709",
+    "-color_trc", "bt709"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.10) saturate(1.18) brightness(1.03) sepia(0.08) hue-rotate(-8deg)",
+    "background": "rgba(14,24,28,0.72)",
+    "border": "1px solid rgba(56,196,188,0.36)",
+    "box_shadow": "0 0 0 1px rgba(255,150,88,0.12) inset, 0 0 18px rgba(0,160,150,0.10)"
+  }
+}

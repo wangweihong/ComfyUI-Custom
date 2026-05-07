@@ -1,0 +1,33 @@
+{
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "output_args": [
+    "-preset",
+    "medium",
+    "-color_range",
+    "tv",
+    "-colorspace",
+    "bt709",
+    "-color_primaries",
+    "bt709",
+    "-color_trc",
+    "bt709"
+  ],
+  "display_name": "h264-mp4轻青橙-2暖肤电影",
+  "video_filters": [
+    "eq=contrast=1.03:brightness=0.004:saturation=1.05:gamma=1.00",
+    "curves=red='0/0 0.20/0.19 0.50/0.53 0.75/0.81 1/1':green='0/0.005 0.20/0.20 0.50/0.51 0.75/0.76 1/1':blue='0/0.012 0.20/0.22 0.50/0.49 0.75/0.71 1/1'"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.04) saturate(1.06) brightness(1.01)",
+    "background": "rgba(18,22,28,0.70)",
+    "border": "1px solid rgba(88,184,210,0.30)",
+    "box_shadow": "0 0 0 1px rgba(255,166,108,0.08) inset"
+  }
+}

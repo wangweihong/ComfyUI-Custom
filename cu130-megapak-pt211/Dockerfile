@@ -116,12 +116,22 @@ RUN bash /builder-scripts/preload-nodes.sh
 ## fix seedvr2 video upscaler报错
 RUN dnf install -y openssl
 
-################################################################################\
+# fix以下报错
+## Warning:
+## Unable to load the following plugins:
+## 	libfilter_ao.so: libfilter_ao.so does not seem to be a Qt Plugin.
+## Cannot load library /usr/local/lib/python3.13/site-packages/pymeshlab/lib/plugins/libfilter_ao.so: (libOpenGL.so.0: cannot open shared object file: No such file or directory)
+## 	libfilter_meshing.so: libfilter_meshing.so does not seem to be a Qt Plugin.
+RUN dnf install -y mesa-libGL mesa-libGL-devel
+
+################################################################################
 # Remove unused node
 # This node will cause ltx error when running,report "RuntimeError: The size of tensor a (28160) must match the size of tensor b (3619968) at non-singleton dimension 2"
 RUN rm -rf /default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI_smZNodes
 
-
+###############################################################################
+# offline nodes
+COPY _nodes/. /default-comfyui-bundle/ComfyUI/custom_nodes/
 ################################################################################
 RUN df -h \
     && du -ah /root \

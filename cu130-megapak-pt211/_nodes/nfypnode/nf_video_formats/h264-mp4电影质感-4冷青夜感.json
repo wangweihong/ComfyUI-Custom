@@ -1,0 +1,34 @@
+{
+  "display_name": "h264-mp4电影质感-4冷青夜感",
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "video_filters": [
+    "eq=contrast=1.06:brightness=-0.004:saturation=1.01:gamma=0.99",
+    "colorbalance=rs=-0.006:gs=0.000:bs=-0.028:rm=-0.004:gm=0.000:bm=-0.026:rh=0.010:gh=0.004:bh=-0.008",
+    "curves=red='0/0.006 0.25/0.21 0.50/0.47 0.75/0.74 1/0.99':green='0/0.008 0.25/0.22 0.50/0.48 0.75/0.75 1/0.99':blue='0/0.030 0.25/0.25 0.50/0.51 0.75/0.77 1/1'"
+  ],
+  "output_args": [
+    "-preset",
+    "medium",
+    "-color_range",
+    "tv",
+    "-colorspace",
+    "bt709",
+    "-color_primaries",
+    "bt709",
+    "-color_trc",
+    "bt709"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.06) saturate(1.02) brightness(0.99)",
+    "background": "rgba(12,20,30,0.74)",
+    "border": "1px solid rgba(86,174,224,0.34)",
+    "box_shadow": "0 0 0 1px rgba(118,224,255,0.08) inset"
+  }
+}

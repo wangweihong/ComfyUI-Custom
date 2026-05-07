@@ -1,0 +1,33 @@
+{
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "output_args": [
+    "-preset",
+    "medium",
+    "-color_range",
+    "tv",
+    "-colorspace",
+    "bt709",
+    "-color_primaries",
+    "bt709",
+    "-color_trc",
+    "bt709"
+  ],
+  "display_name": "h264-mp4轻青橙-4胶片柔和",
+  "video_filters": [
+    "eq=contrast=1.01:brightness=0.006:saturation=1.02:gamma=1.01",
+    "curves=red='0/0.02 0.20/0.20 0.50/0.52 0.75/0.79 1/1':green='0/0.02 0.20/0.21 0.50/0.51 0.75/0.76 1/1':blue='0/0.03 0.20/0.24 0.50/0.50 0.75/0.73 1/1'"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.02) saturate(1.03) brightness(1.02)",
+    "background": "rgba(20,24,30,0.70)",
+    "border": "1px solid rgba(110,194,214,0.28)",
+    "box_shadow": "0 0 0 1px rgba(248,174,118,0.07) inset"
+  }
+}

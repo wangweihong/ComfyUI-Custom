@@ -1,0 +1,27 @@
+{
+  "display_name": "h264-mp4调色",
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "video_filters": [
+    "eq=contrast=1.06:brightness=0.015:saturation=1.12:gamma=1.00"
+  ],
+  "output_args": [
+    "-preset", "medium",
+    "-color_range", "tv",
+    "-colorspace", "bt709",
+    "-color_primaries", "bt709",
+    "-color_trc", "bt709"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.08) saturate(1.16) brightness(1.02)",
+    "background": "rgba(18,18,30,0.70)",
+    "border": "1px solid rgba(255,168,110,0.35)",
+    "box_shadow": "0 0 0 1px rgba(255,168,110,0.08) inset"
+  }
+}

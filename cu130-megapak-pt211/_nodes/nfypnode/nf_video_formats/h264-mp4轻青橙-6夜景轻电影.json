@@ -1,0 +1,33 @@
+{
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "output_args": [
+    "-preset",
+    "medium",
+    "-color_range",
+    "tv",
+    "-colorspace",
+    "bt709",
+    "-color_primaries",
+    "bt709",
+    "-color_trc",
+    "bt709"
+  ],
+  "display_name": "h264-mp4轻青橙-6夜景轻电影",
+  "video_filters": [
+    "eq=contrast=1.05:brightness=-0.001:saturation=1.04:gamma=1.00",
+    "curves=red='0/0 0.20/0.17 0.50/0.50 0.75/0.79 1/1':green='0/0.005 0.20/0.20 0.50/0.50 0.75/0.75 1/1':blue='0/0.02 0.20/0.24 0.50/0.50 0.75/0.72 1/1'"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.05) saturate(1.05) brightness(0.99)",
+    "background": "rgba(12,20,30,0.74)",
+    "border": "1px solid rgba(78,186,220,0.32)",
+    "box_shadow": "0 0 0 1px rgba(255,146,86,0.08) inset"
+  }
+}

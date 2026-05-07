@@ -1,0 +1,28 @@
+{
+  "display_name": "h264-mp4去AI加噪",
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "video_filters": [
+    "hqdn3d=1.3:1.2:6.0:6.0",
+    "unsharp=5:5:0.35:5:5:0.00"
+  ],
+  "output_args": [
+    "-preset", "medium",
+    "-color_range", "tv",
+    "-colorspace", "bt709",
+    "-color_primaries", "bt709",
+    "-color_trc", "bt709"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.06) saturate(1.02) brightness(1.01)",
+    "background": "rgba(18,22,28,0.68)",
+    "border": "1px solid rgba(112,212,255,0.33)",
+    "box_shadow": "0 0 0 1px rgba(112,212,255,0.08) inset"
+  }
+}

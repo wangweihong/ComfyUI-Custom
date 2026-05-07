@@ -1,0 +1,33 @@
+{
+  "extension": "mp4",
+  "video_codec": "libx264",
+  "pix_fmt": "yuv420p",
+  "audio_codec": "aac",
+  "audio_bitrate": "192k",
+  "movflags": "+faststart",
+  "dim_alignment": 2,
+  "input_color_depth": "8bit",
+  "output_args": [
+    "-preset",
+    "medium",
+    "-color_range",
+    "tv",
+    "-colorspace",
+    "bt709",
+    "-color_primaries",
+    "bt709",
+    "-color_trc",
+    "bt709"
+  ],
+  "display_name": "h264-mp4轻青橙-5商业清透",
+  "video_filters": [
+    "eq=contrast=1.03:brightness=0.005:saturation=1.06:gamma=1.00",
+    "curves=red='0/0 0.20/0.19 0.50/0.53 0.75/0.80 1/1':green='0/0.01 0.20/0.20 0.50/0.52 0.75/0.77 1/1':blue='0/0.015 0.20/0.23 0.50/0.50 0.75/0.72 1/1'"
+  ],
+  "preview_style": {
+    "filter": "contrast(1.04) saturate(1.07) brightness(1.02)",
+    "background": "rgba(16,24,32,0.70)",
+    "border": "1px solid rgba(96,198,220,0.30)",
+    "box_shadow": "0 0 0 1px rgba(255,164,104,0.08) inset"
+  }
+}

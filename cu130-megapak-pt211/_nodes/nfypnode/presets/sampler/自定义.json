@@ -1,0 +1,9 @@
+{
+  "override_first_sigmas": false,
+  "first_sigmas_text": "",
+  "enable_second_pass": false,
+  "use_second_upscale": false,
+  "second_upscale_model": "",
+  "second_sigmas_text": "0.85, 0.7250, 0.4219, 0.0",
+  "add_noise": true
+}
