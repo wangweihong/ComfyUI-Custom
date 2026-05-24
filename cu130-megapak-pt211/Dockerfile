@@ -94,6 +94,15 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
         https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260420/mmcv-2.1.0-py2.py3-none-any.whl
 
+
+# lito 3d wheels
+RUN --mount=type=cache,target=/root/.cache/pip \
+    # 修复了 o_voxel 漏掉 pip install 的问题
+    # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
+    pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
+        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260523/pytorch3d-0.7.9-cp313-cp313-linux_x86_64.whl
+
+
 # add additional-pak.txt to constraints.txt
 # Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
 RUN pip list --format=freeze \
@@ -128,7 +137,11 @@ RUN dnf install -y mesa-libGL mesa-libGL-devel
 # Remove unused node
 # This node will cause ltx error when running,report "RuntimeError: The size of tensor a (28160) must match the size of tensor b (3619968) at non-singleton dimension 2"
 RUN rm -rf /default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI_smZNodes
+RUN rm -rf /default-comfyui-bundle/ComfyUI/custom_nodes/VideoX-Fun
 
+# https://github.com/kijai/ComfyUI-DepthAnythingV2/issues/27
+# 解决更好的高斯流 DeepAnythingV2报错的问题
+RUN pip3 uninstall xformers -y
 ###############################################################################
 # offline nodes
 COPY _nodes/. /default-comfyui-bundle/ComfyUI/custom_nodes/

@@ -14,7 +14,8 @@ TORCH_CUDA_ARCH_LIST ?= 8.0;8.6;10
 DATE := $(shell date +%Y%m%d)
 
 #  Model Path
-MODEL_PARENT ?= /root/ComfyUI 
+MODEL_PARENT ?= /media/wwhvw/A63032EE3032C5595/comfyui-docker/storage-models 
+OUTPUT_PARENT ?= /media/wwhvw/备份1/comfyui
 
 # Test Port
 TEST_PORT ?= 8188
@@ -159,9 +160,25 @@ test-$(1):
 	         $$$$TEST_DIR/storage-user/user-profile \
 	         $$$$TEST_DIR/storage-user/user-scripts; \
 	echo "Starting container for component: $(1)..."; \
+	HPROXY=""; \
+	HSPROXY=""; \
+	if [ ! -z "$$$$http_proxy" ]; then \
+		echo "Using http_proxy: $$$$http_proxy"; \
+		HPROXY="$$$$http_proxy"; \
+	elif [ ! -z "$$$$HTTP_PROXY" ]; then \
+		echo "Using HTTP_PROXY: $$$$HTTP_PROXY"; \
+		HPROXY="$$$$HTTP_PROXY"; \
+	fi; \
+	if [ ! -z "$$$$https_proxy" ]; then \
+		echo "Using HTTPS_PROXY: $$$$https_proxy"; \
+		HSPROXY="$$$$https_proxy"; \
+	elif [ ! -z "$$$$HTTPS_PROXY" ]; then \
+		echo "Using HTTPS_PROXY: $$$$HTTPS_PROXY"; \
+		HSPROXY="$$$$HTTPS_PROXY"; \
+	fi; \
 	docker run -it  \
 	  --name comfyui-test-$$$$COMPONENT_TAG \
-	  --gpus 1 \
+	  --gpus all \
 	  -p $(TEST_PORT):8188 \
 	  -v "$$$$TEST_DIR/storage-cache/dot-cache:/root/.cache" \
 	  -v "$$$$TEST_DIR/storage-cache/dot-config:/root/.config" \
@@ -172,17 +189,30 @@ test-$(1):
 	  -v "$(MODEL_PARENT)/hf-hub:/root/.cache/huggingface/hub" \
 	  -v "$(MODEL_PARENT)/torch-hub:/root/.cache/torch/hub" \
 	  -v "/home/wwhvw/codespace/comfyui-ecosystem/assets:/root/ComfyUI/input" \
-	  -v "$$$$TEST_DIR/storage-user/output:/root/ComfyUI/output" \
+	  -v "$(OUTPUT_PARENT)/output:/root/ComfyUI/output" \
 	  -v /home/wwhvw/codespace/comfyui-ecosystem/workflows:/root/ComfyUI/user/default/workflows \
       -v /home/wwhvw/codespace/comfyui-ecosystem/subgraphs:/root/ComfyUI/user/default/subgraphs \
 	  -v "$$$$TEST_DIR/storage-user/user-scripts:/root/user-scripts" \
-	  -e HTTP_PROXY=$(HTTP_PROXY) \
-	  -e HTTPS_PROXY=$(HTTPS_PROXY) \
+	  -e HTTP_PROXY=$(HPROXY) \
+	  -e HTTPS_PROXY=$(HSPROXY) \
 	  -e HF_ENDPOINT="https://hf-mirror.com" \
 	  -e CLI_ARGS=$(CLI_ARGS) \
 	  $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG; \
 	echo "Cleaning up temporary directory: $$$$TEST_DIR"; \
 	#rm -rf $$$$TEST_DIR
+
+simpletest-$(1): 
+	@COMPONENT_TAG="$(call get_component_tag,$(1))"; \
+	docker run -it  \
+	  --name comfyui-test-$$$$COMPONENT_TAG \
+	  --gpus all \
+	  -p $(TEST_PORT):8188 \
+	  -v "$(MODEL_PARENT)/models:/root/ComfyUI/models" \
+	  -v "$(MODEL_PARENT)/u2net:/root/.u2net" \
+	  -v "$(MODEL_PARENT)/hf-hub:/root/.cache/huggingface/hub" \
+	  -v "$(MODEL_PARENT)/torch-hub:/root/.cache/torch/hub" \
+	  -e CLI_ARGS=$(CLI_ARGS) \
+	  $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG; 
 endef
 
 $(foreach comp,$(COMPONENTS),$(eval $(call COMPONENT_TEMPLATE,$(comp))))

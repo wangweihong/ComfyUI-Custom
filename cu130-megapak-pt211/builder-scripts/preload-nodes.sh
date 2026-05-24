@@ -129,7 +129,55 @@ gcs https://github.com/Saganaki22/ComfyUI-Woosh.git
 gcs https://github.com/alisson-anjos/ComfyUI-BFSNodes.git
 gcs https://github.com/lucafoscili/lf-nodes.git
 
-# 很好用的加载视频,支持加载时裁减
+# 非常强大的视频处理节点
+# 包含Ltx Director(Prompt Relay Encoded增强版), 多图管理等功能
 gcs https://github.com/WhatDreamsCost/WhatDreamsCost-ComfyUI.git
+
+# nvidia专用放大
+gcs https://github.com/Comfy-Org/Nvidia_RTX_Nodes_ComfyUI.git   
+ 
+
+# mesh2motion
+gcs https://github.com/jtydhr88/ComfyUI-mesh2motion.git
+
+# ShowMe
+gcs https://github.com/SKBv0/ComfyUI_ShowMe.git
+
+# 10Eros
+gcs https://github.com/TenStrip/10S-Comfy-nodes.git
+
+# llm api
+gcs https://github.com/heshengtao/comfyui_LLM_party.git
+
+# zit 图像参考
+gcs https://github.com/WuMIn259/ComfyUI-ZTurbo-Style-Transfer.git
+
+# wan animate 
+gcs https://github.com/kijai/ComfyUI-WanVideoWrapper.git
+gcs https://github.com/kijai/ComfyUI-WanAnimatePreprocess.git
+
+gcs https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git
+gcs https://github.com/grmchn/ComfyUI-ProportionChanger.git
+
+# 3d pixal(可以用virsual bruno的?)
+gcs https://github.com/Saganaki22/Pixal3D-ComfyUI.git
+
+# anima
+gcs https://github.com/AdamNizol/ComfyUI-Anima-Enhancer.git
+# sunxAI facetools
+gcs https://github.com/upseem/comfyui_sunxAI_facetools.git
+
+# easy media
+# https://www.bilibili.com/video/BV14NL26nE93/?spm_id_from=333.1387.homepage.video_card.click
+gcs https://github.com/yolain/ComfyUI-Easy-Media.git
+
+# lita 3d
+gcs https://github.com/PozzettiAndrea/ComfyUI-LiTo.git
+gcs https://github.com/PozzettiAndrea/ComfyUI-GaussianPack.git
+
+# 更好的高斯
+gcs https://github.com/jamesWalker55/comfyui-various.git
+gcs https://github.com/lrzjason/Comfyui-QwenEditUtils.git
+gcs https://github.com/supart/comfyui_gaussian_splat.git
 
 echo "[INFO] Additional custom nodes downloaded successfully"

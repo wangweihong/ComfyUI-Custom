@@ -34,5 +34,28 @@ transformers>=5.6.2
 # sharp
 comfy_env
 
+# nvidia upscale
+nvidia-vfx
+
+# llm
+openai
+aisuite
+langchain_community
+langchain_openai
+neo4j
+docx2txt
+openpyxl
+pdfplumber
+xlrd
+wikipedia
+streamlit
+
 #woosh
 hear21passt
+
+# facetool 这个mediapipe只是为了解决插件import失败，实际不能用。因为其不支持python 3.13
+mediapipe
+
+#lito 3d
+spconv
+lpips
