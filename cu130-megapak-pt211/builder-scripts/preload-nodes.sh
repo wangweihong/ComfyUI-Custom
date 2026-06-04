@@ -158,6 +158,7 @@ gcs https://github.com/kijai/ComfyUI-WanAnimatePreprocess.git
 
 gcs https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git
 gcs https://github.com/grmchn/ComfyUI-ProportionChanger.git
+gcs https://github.com/wuwukaka/ComfyUI-BodyRatioMapper.git
 
 # 3d pixal(可以用virsual bruno的?)
 gcs https://github.com/Saganaki22/Pixal3D-ComfyUI.git
@@ -179,5 +180,21 @@ gcs https://github.com/PozzettiAndrea/ComfyUI-GaussianPack.git
 gcs https://github.com/jamesWalker55/comfyui-various.git
 gcs https://github.com/lrzjason/Comfyui-QwenEditUtils.git
 gcs https://github.com/supart/comfyui_gaussian_splat.git
+gcs https://github.com/Windecay/ComfyUI-ReservedVRAM.git
+
+# vnccs
+gcs https://github.com/AHEKOT/ComfyUI_VNCCS.git
+gcs https://github.com/AHEKOT/ComfyUI_VNCCS_Utils.git
+
+# illustion 随机提示词生成
+gcs https://github.com/rainlizard/ComfyUI-Raffle.git
+
+# fishs2
+gcs https://github.com/Saganaki22/ComfyUI-FishAudioS2.git
+
+# anima pixAI反推（速度块)
+gcs https://github.com/adbrasi/booru-helper-mini.git
+
 
 echo "[INFO] Additional custom nodes downloaded successfully"
+

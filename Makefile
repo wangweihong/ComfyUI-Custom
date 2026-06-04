@@ -15,7 +15,7 @@ DATE := $(shell date +%Y%m%d)
 
 #  Model Path
 MODEL_PARENT ?= /media/wwhvw/A63032EE3032C5595/comfyui-docker/storage-models 
-OUTPUT_PARENT ?= /media/wwhvw/备份1/comfyui
+OUTPUT_PARENT ?= /media/wwhvw/备份/comfyui
 
 # Test Port
 TEST_PORT ?= 8188
@@ -52,6 +52,7 @@ COMPONENT_DIRS = \
     base-cu130-slim-s1:base-cu130-slim-s1 \
     base-cu130-devel:base-cu130-devel \
     base-rocm72-pt211:base-rocm72-pt211
+
 
 # Function to get component directory
 define get_component_dir
@@ -186,6 +187,7 @@ test-$(1):
 	  -v "$$$$TEST_DIR/storage-nodes/custom_nodes:/root/ComfyUI/custom_nodes" \
 	  -v "$(MODEL_PARENT)/models:/root/ComfyUI/models" \
 	  -v "$(MODEL_PARENT)/u2net:/root/.u2net" \
+	  -v "$(MODEL_PARENT)/comfyui_controlnet_aux/ckpts:/root/ComfyUI/custom_nodes/comfyui_controlnet_aux/ckpts" \
 	  -v "$(MODEL_PARENT)/hf-hub:/root/.cache/huggingface/hub" \
 	  -v "$(MODEL_PARENT)/torch-hub:/root/.cache/torch/hub" \
 	  -v "/home/wwhvw/codespace/comfyui-ecosystem/assets:/root/ComfyUI/input" \

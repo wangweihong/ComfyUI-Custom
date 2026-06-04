@@ -59,3 +59,4 @@ mediapipe
 #lito 3d
 spconv
 lpips
+hf_transfer 
