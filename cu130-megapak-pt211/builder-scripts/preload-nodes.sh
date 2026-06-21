@@ -195,6 +195,27 @@ gcs https://github.com/Saganaki22/ComfyUI-FishAudioS2.git
 # anima pixAI反推（速度块)
 gcs https://github.com/adbrasi/booru-helper-mini.git
 
+# ltx multi-subject-reference
+gcs https://github.com/liconstudio/ComfyUI-Licon-MSR.git
+gcs https://github.com/o-l-l-i/ComfyUI-Olm-DragCrop.git
+
+# klein 转3d
+gcs https://github.com/BlackSnowSkill/ComfyUI-BSS_FLSampler.git
+
+# ideogram4 prompt builder实时
+gcs https://github.com/Work-Fisher/ComfyUI-Ideogram4-DirectJSON-Modified.git
+
+# image resolution
+gcs https://github.com/gseth/ControlAltAI-Nodes.git
+
+# ideogram4 director
+gcs https://github.com/Deno2026/comfyui-deno-custom-nodes.git
+
+# 自动打马赛克
+gcs https://github.com/sugarkwork/comfyui-auto-mosaic.git
+
+# f2k 合一节点 https://www.youtube.com/watch?v=L4ItbBWXqCo
+gcs https://github.com/yanokusnir-ai/one-node-flux-2-klein.git  
 
 echo "[INFO] Additional custom nodes downloaded successfully"
 
