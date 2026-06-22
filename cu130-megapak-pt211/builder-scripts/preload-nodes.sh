@@ -2,12 +2,41 @@
 
 set -euo pipefail
 
+# gcs() {
+#     git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$@"
+# }
+# 带有重试机制的克隆函数
 gcs() {
-    git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$@"
+    local url="$1"
+    local max_attempts=3
+    local attempt=1
+    local wait_time=2
+
+    while [ $attempt -le $max_attempts ]; do
+        echo "--> [Attempt $attempt/$max_attempts] Cloning $url..."
+        
+        # 尝试执行 git clone，如果成功则直接返回
+        if git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$url"; then
+            return 0
+        fi
+
+        echo "--> [Warning] Clone failed for $url. Retrying in ${wait_time}s..."
+        sleep $wait_time
+        attempt=$((attempt + 1))
+        wait_time=$((wait_time * 2)) # 指数退避，第一次等2秒，第二次等4秒
+    done
+
+    # 如果达到最大尝试次数仍失败，则触发 set -e 导致脚本退出
+    echo "--> [Error] Failed to clone $url after $max_attempts attempts."
+    return 1
 }
 
 echo "########################################"
 echo "[INFO] Downloading Additional Custom Nodes..."
+echo "########################################"
+
+echo "########################################"
+echo "[INFO] https_proxy:$https_proxy"
 echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
