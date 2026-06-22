@@ -67,7 +67,6 @@ RUN cd /usr/local/lib/python3.13/site-packages/comfyui_manager/legacy/ \
 
 # 3d trellis2 wheels
 RUN --mount=type=cache,target=/root/.cache/pip \
-    # 修复了 o_voxel 漏掉 pip install 的问题
     # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
     pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
         https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260413/cumesh-1.0-cp313-cp313-linux_x86_64.whl \
@@ -82,14 +81,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # index tts 2 wheels
 RUN --mount=type=cache,target=/root/.cache/pip \
-    # 修复了 o_voxel 漏掉 pip install 的问题
     # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
     pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
         https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260419/descript_audiotools-0.7.4-py2.py3-none-any.whl
 
 # SD POSE
 RUN --mount=type=cache,target=/root/.cache/pip \
-    # 修复了 o_voxel 漏掉 pip install 的问题
     # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
     pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
         https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260420/mmcv-2.1.0-py2.py3-none-any.whl
@@ -97,11 +94,16 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # lito 3d wheels
 RUN --mount=type=cache,target=/root/.cache/pip \
-    # 修复了 o_voxel 漏掉 pip install 的问题
     # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
     pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
         https://github.com/wangweihong/Wheels-Containerfiles/releases/download/20260523/pytorch3d-0.7.9-cp313-cp313-linux_x86_64.whl
 
+# fix sageattention head dim 256 bug in ideogram4 
+RUN --mount=type=cache,target=/root/.cache/pip \
+    # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
+    pip uninstall -y sageattention \
+    && pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
+        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/sageattention/sageattention-2.2.0+git.5bcf8c3.cu130.pt211-cp313-cp313-linux_x86_64.whl
 
 # add additional-pak.txt to constraints.txt
 # Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
