@@ -1,2 +1,3 @@
 prompts_generate/.env
 _deprecate
+**/offline-cache/repos/
