@@ -20,6 +20,9 @@ OUTPUT_PARENT ?= /media/wwhvw/备份/comfyui
 # Test Port
 TEST_PORT ?= 8188
 
+
+OFFLINE_MODE ?= false
+
 # Qwen2511-edit设置--fast会出现花图
 # --disable-xformers可以解决xformers无法在cu130-py3.11-pt211 5090架构运行的问题
 #CLI_ARGS ?= " --disable-xformers"
@@ -125,6 +128,7 @@ build-$(1):
 		$$$$PROXY_ARGS \
 		--build-arg REGISTRY=$(REGISTRY) \
 		--build-arg MAX_JOBS=$(MAX_JOBS) \
+		--build-arg OFFLINE_MODE=$(OFFLINE_MODE) \
 		--build-arg TORCH_CUDA_ARCH_LIST='$(TORCH_CUDA_ARCH_LIST)' \
 		-t $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG \
 		-t $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG-$(DATE) \

@@ -32,6 +32,8 @@ ARG HTTP_PROXY
 ARG HTTPS_PROXY
 ARG NO_PROXY
 
+# [新增] 声明是否开启离线拷贝模式，默认不开启
+ARG OFFLINE_MODE=false
 ################################################################################
 # Update the ComfyUI bundle in the image
 
@@ -120,7 +122,26 @@ RUN --mount=type=cache,target=/root/.cache/pip \
         -c /builder-scripts/constraints.txt \
         -r /builder-scripts/additional-pak.txt \
         -r /builder-scripts/pak1.txt
-RUN bash /builder-scripts/preload-nodes.sh
+#RUN bash /builder-scripts/preload-nodes.sh
+
+COPY ./offline-cache/repos/. /tmp/local-preload-nodes/
+
+# 3. 用一条 RUN 指令配合 Shell 的 if 逻辑处理分流
+RUN if [ "$OFFLINE_MODE" = "true" ] ; then \
+        echo "====================================================" && \
+        echo "检测到 OFFLINE_MODE=true，正在跳过网络下载，改由本地离线包拷贝..." && \
+        echo "====================================================" && \
+        # 假设脚本下载的目标路径是 /default-comfyui-bundle/ComfyUI/custom_nodes/
+        # 将刚刚 COPY 进来的临时文件移动到最终节点目录
+        cp -r /tmp/local-preload-nodes/* /default-comfyui-bundle/ComfyUI/custom_nodes/ ; \
+    else \
+        echo "====================================================" && \
+        echo "检测到 OFFLINE_MODE=false，正在通过网络下载节点..." && \
+        echo "====================================================" && \
+        bash /builder-scripts/preload-nodes.sh ; \
+    fi && \
+    # 无论走哪条分支，最后都要删掉临时目录，确保不会有重复和垃圾文件留在镜像中
+    rm -rf /tmp/local-preload-nodes
 
 # fix Qwen3-tts /bin/sh: line 1: sox: command not found
 #RUN dnf install -y sox

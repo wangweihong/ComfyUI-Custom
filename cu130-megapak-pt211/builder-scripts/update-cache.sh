@@ -3,22 +3,68 @@
 set -euo pipefail
 
 function git_force_sync () {
-    git_remote_url=$(git -C "$1" remote get-url origin)
+    local repo_dir="$1"
+    local max_attempts=3
+    local attempt=1
+    local wait_time=2
+    local git_remote_url
 
-    if [[ $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
-        git -C "$1" fetch --depth=1 --no-tags
+    git_remote_url=$(git -C "$repo_dir" remote get-url origin 2>/dev/null) || return 0
 
-        _local_head=$(git -C "$1" rev-parse HEAD)
-        _remote_head=$(git -C "$1" rev-parse '@{upstream}')
-
-        if [ "$_local_head" != "$_remote_head" ]; then
-            echo "[INFO] Updating: $1"
-            git -C "$1" reset --hard '@{upstream}'
-            git -C "$1" submodule update --init --recursive --depth=1
-            echo "[INFO] Done Updating: $1"
-        fi
+    if [[ ! $git_remote_url =~ ^(https:\/\/github\.com\/)(.*)(\.git)$ ]]; then
+        return 0
     fi
+
+    while [ $attempt -le $max_attempts ]; do
+        if git -C "$repo_dir" fetch --depth=1 --no-tags 2>/dev/null; then
+            local _local_head _remote_head
+            _local_head=$(git -C "$repo_dir" rev-parse HEAD 2>/dev/null || echo "")
+            _remote_head=$(git -C "$repo_dir" rev-parse '@{upstream}' 2>/dev/null || echo "")
+
+            if [ -n "$_local_head" ] && [ -n "$_remote_head" ] \
+               && [ "$_local_head" != "$_remote_head" ]; then
+                echo "[INFO] Updating: $repo_dir"
+                if git -C "$repo_dir" reset --hard '@{upstream}' 2>/dev/null \
+                   && git -C "$repo_dir" submodule update --init --recursive --depth=1 2>/dev/null; then
+                    echo "[INFO] Done Updating: $repo_dir"
+                    return 0
+                fi
+            else
+                return 0
+            fi
+        fi
+
+        echo "[WARN] Attempt $attempt/$max_attempts failed for $repo_dir, retrying in ${wait_time}s..."
+        sleep $wait_time
+        attempt=$((attempt + 1))
+        wait_time=$((wait_time * 2))
+    done
+
+    echo "[ERROR] Failed to sync $repo_dir after $max_attempts attempts."
+    return 1
 }
+
+function git_clone_retry () {
+    local max_attempts=3
+    local attempt=1
+    local wait_time=2
+ 
+    while [ $attempt -le $max_attempts ]; do
+        echo "[INFO] Cloning (attempt $attempt/$max_attempts)..."
+        if git clone --depth=1 --no-tags "$@"; then
+            return 0
+        fi
+ 
+        echo "[WARN] Clone failed, retrying in ${wait_time}s..."
+        sleep $wait_time
+        attempt=$((attempt + 1))
+        wait_time=$((wait_time * 2))
+    done
+ 
+    echo "[ERROR] Failed to clone after $max_attempts attempts."
+    return 1
+}
+
 
 echo "########################################"
 echo "[INFO] Updating ComfyUI..."
@@ -53,8 +99,7 @@ echo "[INFO] Installing additional Custom Nodes..."
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 # FastVideo
-git clone --depth=1 --no-tags \
-    https://github.com/hao-ai-lab/FastVideo.git \
+git_clone_retry https://github.com/hao-ai-lab/FastVideo.git \
     /tmp/FastVideo
 
 mkdir -p /default-comfyui-bundle/ComfyUI/custom_nodes/FastVideo
@@ -64,8 +109,7 @@ rm -rf /tmp/FastVideo
 # ComfyUI-SageAttention3
 # A simple connector node for adapting SA3
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
-git clone --depth=1 --no-tags \
-https://github.com/wallen0322/ComfyUI-SageAttention3.git
+git_clone_retry https://github.com/wallen0322/ComfyUI-SageAttention3.git
 
 echo "########################################"
 echo "[INFO] Configuring ComfyUI & Manager..."
