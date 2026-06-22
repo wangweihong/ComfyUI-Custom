@@ -1,0 +1,93 @@
+name: Build and Push ComfyUI Docker Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      components:
+        description: "要构建的组件列表 (逗号分隔，例如: cu130-megapak-pt211,cu130-slim)"
+        required: false
+        default: "cu130-megapak-pt211"
+  schedule:
+    - cron: "0 0 * * 0"
+
+env:
+  REGISTRY: registry.cn-hangzhou.aliyuncs.com
+  REPO_NAME: eazycloud
+  IMAGE_NAME: eazycloud/comfyui-custom
+  MAX_JOBS: 4
+  TORCH_CUDA_ARCH_LIST: "8.0;8.6;10.0;12.0;12.0+PTX"
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # === 前置清理与状态打印 ===
+      - name: Cleanup and System Check
+        run: |
+          echo "========================================================="
+          echo "【清理前】系统内存与磁盘状态："
+          echo "========================================================="
+          free -h
+          echo ""
+          df -h
+          echo ""
+
+          echo "========================================================="
+          echo "开始清理不需要的系统组件..."
+          echo "========================================================="
+
+          # 1. 移除不常用的庞大软件及工具包 (大型语言环境、.NET、Android SDK等)
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache/CodeQL
+
+          # 2. 清理系统软件包缓存
+          sudo apt-get remove -y '^dotnet-.*' '^llvm-.*' 'php.*' 'google-chrome-stable' 'microsoft-edge-stable' azure-cli google-cloud-sdk mono-devel powershell firefox
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+
+          # 3. 清理 Docker 默认残留（GitHub 环境中可能存在一些基础镜像缓存）
+          docker rmi $(docker images -q) 2>/dev/null || true
+          docker builder prune -a -f
+
+          echo "========================================================="
+          echo "【清理后】系统内存与磁盘状态："
+          echo "========================================================="
+          free -h
+          echo ""
+          df -h
+          echo "========================================================="
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Alibaba Cloud Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.ALIYUN_USERNAME }}
+          password: ${{ secrets.ALIYUN_PASSWORD }}
+
+      - name: Run Makefile Build and Push
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ ! -z "${{ github.event.inputs.components }}" ]; then
+            echo "Executing list-based build for components: ${{ github.event.inputs.components }}"
+            make push-list \
+              REGISTRY="${{ env.REGISTRY }}" \
+              IMAGE_NAME="${{ env.IMAGE_NAME }}" \
+              MAX_JOBS="${{ env.MAX_JOBS }}" \
+              TORCH_CUDA_ARCH_LIST="${{ env.TORCH_CUDA_ARCH_LIST }}" \
+              LIST="${{ github.event.inputs.components }}"
+          else
+            echo "Executing all-inclusive build..."
+            make push-all \
+              REGISTRY="${{ env.REGISTRY }}" \
+              IMAGE_NAME="${{ env.IMAGE_NAME }}" \
+              MAX_JOBS="${{ env.MAX_JOBS }}" \
+              TORCH_CUDA_ARCH_LIST="${{ env.TORCH_CUDA_ARCH_LIST }}"
+          fi

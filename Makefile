@@ -8,7 +8,7 @@ IMAGE_NAME ?= $(REPO_NAME)/comfyui-custom
 
 # Build arguments with defaults
 MAX_JOBS ?= 1
-TORCH_CUDA_ARCH_LIST ?= 8.0;8.6;10
+TORCH_CUDA_ARCH_LIST ?= 8.0;8.6;10.0;12.0;12.0+PTX
 
 # Current date for timestamped tags (format: YYYYMMDD)
 DATE := $(shell date +%Y%m%d)
@@ -188,13 +188,16 @@ test-$(1):
 	  -v "$(MODEL_PARENT)/models:/root/ComfyUI/models" \
 	  -v "$(MODEL_PARENT)/u2net:/root/.u2net" \
 	  -v "$(MODEL_PARENT)/comfyui_controlnet_aux/ckpts:/root/ComfyUI/custom_nodes/comfyui_controlnet_aux/ckpts" \
+	  -v "$(MODEL_PARENT)/pixai:/root/ComfyUI/custom_nodes/booru-helper-mini/models/pixai" \
+	  -v "$(MODEL_PARENT)/wd14tagger/models:/root/ComfyUI/custom_nodes/booru-helper-mini/models/ComfyUI-WD14-Tagger/models" \
 	  -v "$(MODEL_PARENT)/hf-hub:/root/.cache/huggingface/hub" \
 	  -v "$(MODEL_PARENT)/torch-hub:/root/.cache/torch/hub" \
-	  -v "/home/wwhvw/codespace/comfyui-ecosystem/assets:/root/ComfyUI/input" \
+	  -v "$(OUTPUT_PARENT)/assets:/root/ComfyUI/input" \
 	  -v "$(OUTPUT_PARENT)/output:/root/ComfyUI/output" \
-	  -v /home/wwhvw/codespace/comfyui-ecosystem/workflows:/root/ComfyUI/user/default/workflows \
-      -v /home/wwhvw/codespace/comfyui-ecosystem/subgraphs:/root/ComfyUI/user/default/subgraphs \
+	  -v  $(OUTPUT_PARENT)/comfyui-ecosystem/workflows:/root/ComfyUI/user/default/workflows \
+      -v  $(OUTPUT_PARENT)/comfyui-ecosystem/subgraphs:/root/ComfyUI/user/default/subgraphs \
 	  -v "$$$$TEST_DIR/storage-user/user-scripts:/root/user-scripts" \
+	  -e CUDA_LAUNCH_BLOCKING=1 \
 	  -e HTTP_PROXY=$(HPROXY) \
 	  -e HTTPS_PROXY=$(HSPROXY) \
 	  -e HF_ENDPOINT="https://hf-mirror.com" \
