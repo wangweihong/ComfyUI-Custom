@@ -86,7 +86,91 @@ if [ ${#URLS[@]} -eq 0 ]; then
     exit 1
 fi
 
-echo "[INFO] Found ${#URLS[@]} repositories"
+echo "[INFO] Found ${#URLS[@]} remote repositories"
+
+declare -A remote_names
+for url in "${URLS[@]}"; do
+    remote_names[$(get_repo_name "$url")]=1
+done
+
+local_names=()
+if [ -d "$REPOS_DIR" ]; then
+    for dir in "$REPOS_DIR"/*/; do
+        [ -d "$dir" ] || continue
+        name=$(basename "$dir")
+        local_names+=("$name")
+    done
+fi
+
+declare -A local_names_map
+for name in "${local_names[@]}"; do
+    local_names_map["$name"]=1
+done
+
+new_nodes=()
+existing_nodes=()
+removed_nodes=()
+
+for name in "${!remote_names[@]}"; do
+    if [[ -v local_names_map["$name"] ]]; then
+        existing_nodes+=("$name")
+    else
+        new_nodes+=("$name")
+    fi
+done
+
+for name in "${local_names[@]}"; do
+    if [[ ! -v remote_names["$name"] ]]; then
+        removed_nodes+=("$name")
+    fi
+done
+
+echo ""
+echo "########################################"
+echo "[INFO] Node Status Detection"
+echo "########################################"
+echo ""
+if [ ${#new_nodes[@]} -gt 0 ]; then
+    echo "  🆕 New nodes (${#new_nodes[@]}):"
+    for name in "${new_nodes[@]}"; do echo "     - $name"; done
+fi
+if [ ${#existing_nodes[@]} -gt 0 ]; then
+    echo "  ✅ Existing nodes (${#existing_nodes[@]}):"
+    for name in "${existing_nodes[@]}"; do echo "     - $name"; done
+fi
+if [ ${#removed_nodes[@]} -gt 0 ]; then
+    echo "  ⚠️  Removed nodes (${#removed_nodes[@]}):"
+    for name in "${removed_nodes[@]}"; do echo "     - $name"; done
+fi
+echo ""
+
+if [ ${#removed_nodes[@]} -gt 0 ]; then
+    if [ "${FORCE_DEPRECATE_NODE_DELETE:-}" = "true" ]; then
+        echo "[INFO] FORCE_DEPRECATE_NODE_DELETE=true, auto-deleting removed nodes..."
+        for name in "${removed_nodes[@]}"; do
+            echo "  🗑️  Deleting: $name"
+            rm -rf "$REPOS_DIR/$name"
+        done
+    else
+        echo "[INFO] The following local repos are no longer in preload-nodes.sh:"
+        for name in "${removed_nodes[@]}"; do
+            echo "  - $name"
+        done
+        echo ""
+        read -r -p "Delete these removed local repos? [y/N] " answer
+        case "$answer" in
+            [yY]|[yY][eE][sS])
+                for name in "${removed_nodes[@]}"; do
+                    echo "  🗑️  Deleting: $name"
+                    rm -rf "$REPOS_DIR/$name"
+                done
+                ;;
+            *)
+                echo "[INFO] Skipped deletion of removed nodes."
+                ;;
+        esac
+    fi
+fi
 
 echo ""
 echo "########################################"

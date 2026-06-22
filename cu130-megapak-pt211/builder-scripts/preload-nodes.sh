@@ -170,7 +170,7 @@ gcs https://github.com/Comfy-Org/Nvidia_RTX_Nodes_ComfyUI.git
 gcs https://github.com/jtydhr88/ComfyUI-mesh2motion.git
 
 # ShowMe
-gcs https://github.com/SKBv0/ComfyUI_ShowMe.git
+#gcs https://github.com/SKBv0/ComfyUI_ShowMe.git
 
 # 10Eros
 gcs https://github.com/TenStrip/10S-Comfy-nodes.git
