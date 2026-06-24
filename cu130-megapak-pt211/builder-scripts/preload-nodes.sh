@@ -242,5 +242,8 @@ gcs https://github.com/sugarkwork/comfyui-auto-mosaic.git
 # f2k 合一节点 https://www.youtube.com/watch?v=L4ItbBWXqCo
 gcs https://github.com/yanokusnir-ai/one-node-flux-2-klein.git  
 
+# krea2去除安全审查 https://www.reddit.com/r/StableDiffusion/comments/1udhaio/this_custom_node_removes_the_builtin_krea_2/
+gcs https://github.com/nova452/ComfyUI-ConditioningKrea2Rebalance.git
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
