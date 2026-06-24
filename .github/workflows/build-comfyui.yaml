@@ -7,6 +7,14 @@ on:
         description: "要构建的组件列表 (逗号分隔，例如: cu130-megapak-pt211,cu130-slim)"
         required: false
         default: "cu130-megapak-pt211"
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "cu130-*/**"
+      - "Makefile"
+      - ".github/workflows/build-comfyui.yaml"
   schedule:
     - cron: "0 0 * * 0"
 

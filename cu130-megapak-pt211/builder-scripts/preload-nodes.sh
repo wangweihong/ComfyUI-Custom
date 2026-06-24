@@ -35,10 +35,6 @@ echo "########################################"
 echo "[INFO] Downloading Additional Custom Nodes..."
 echo "########################################"
 
-echo "########################################"
-echo "[INFO] https_proxy:$https_proxy"
-echo "########################################"
-
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
 # 3d trellies.2
