@@ -24,7 +24,7 @@ TEST_PORT ?= 8188
 OFFLINE_MODE ?= false
 
 # Qwen2511-edit设置--fast会出现花图
-# --disable-xformers可以解决xformers无法在cu130-py3.11-pt211 5090架构运行的问题
+# --disable-xformers可以解决xformers无法在cu130-py3.11-pt211 5090架构	运行的问题
 #CLI_ARGS ?= " --disable-xformers"
 
 # Component definitions

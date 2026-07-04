@@ -245,5 +245,9 @@ gcs https://github.com/yanokusnir-ai/one-node-flux-2-klein.git
 # krea2去除安全审查 https://www.reddit.com/r/StableDiffusion/comments/1udhaio/this_custom_node_removes_the_builtin_krea_2/
 gcs https://github.com/nova452/ComfyUI-ConditioningKrea2Rebalance.git
 
+
+# gemma4反推
+gcs https://github.com/tl2012tl/comfyUI-llama-TE.git
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
