@@ -112,7 +112,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
     pip uninstall -y llama-cpp-python \
     && pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
-        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/llama-cpp-python/llama_cpp_python-0.3.40+git.6f21d4d.cu130.pt211-cp313-cp313-linux_x86_64.whl
+        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/llama-cpp-python/llama_cpp_python-0.3.40+git.6f21d4d.cu130.pt211-cp313-cp313-cuda-linux_x86_64.whl
 # add additional-pak.txt to constraints.txt
 # Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
 RUN pip list --format=freeze \

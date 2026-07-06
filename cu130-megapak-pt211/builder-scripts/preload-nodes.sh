@@ -249,5 +249,13 @@ gcs https://github.com/nova452/ComfyUI-ConditioningKrea2Rebalance.git
 # gemma4反推
 gcs https://github.com/tl2012tl/comfyUI-llama-TE.git
 
+# krea2 controlnet depth
+# https://www.reddit.com/r/StableDiffusion/comments/1ummd2h/krea_2_depth_controlnet_lora/
+gcs https://github.com/facok/comfyui-krea2-controlnet.git
+
+# klein控制光角度
+# https://www.reddit.com/r/StableDiffusion/comments/1ulomm5/precise_control_of_the_sun_direction_with_this/
+gcs https://github.com/eric-venti-seeds/Sphere-Light-Render-ComfyUI.git
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
