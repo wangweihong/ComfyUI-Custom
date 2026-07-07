@@ -50,6 +50,13 @@ else
     source /root/user-scripts/pre-start.sh
 fi ;
 
+
+if [ -d "/root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data" ] && [ ! -f "/root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data/prompts.sqlite3" ] ; then
+    mv /default-comfyui-bundle/prompts.sqlite3 /root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data/prompts.sqlite3
+else
+    echo "[INFO] Using existing ComfyUI prompts.sqlite3 in user storage..."
+fi
+
 # Copy workflows and subgraphs from bundle if not disabled
 # cd /root
 # if [ -z "${DISABLE_PRESETS:-}" ]; then

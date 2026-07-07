@@ -196,6 +196,7 @@ test-$(1):
 	  -v "$(MODEL_PARENT)/wd14tagger/models:/root/ComfyUI/custom_nodes/booru-helper-mini/models/ComfyUI-WD14-Tagger/models" \
 	  -v "$(MODEL_PARENT)/hf-hub:/root/.cache/huggingface/hub" \
 	  -v "$(MODEL_PARENT)/torch-hub:/root/.cache/torch/hub" \
+      -v "$(OUTPUT_PARENT)/prompts.sqlite3:/root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data/prompts.sqlite3" \
 	  -v "$(OUTPUT_PARENT)/assets:/root/ComfyUI/input" \
 	  -v "$(OUTPUT_PARENT)/output:/root/ComfyUI/output" \
 	  -v  $(OUTPUT_PARENT)/comfyui-ecosystem/workflows:/root/ComfyUI/user/default/workflows \

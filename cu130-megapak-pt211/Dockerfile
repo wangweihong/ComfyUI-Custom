@@ -112,9 +112,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     # 使用 ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} 实现动态代理切换
     pip uninstall -y llama-cpp-python \
     && pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
-        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/llama-cpp-python/llama_cpp_python-0.3.40+git.6f21d4d.cu130.pt211-cp313-cp313-cuda-linux_x86_64.whl
+        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/llama-cpp-python/llama_cpp_python-0.3.40+git.6f21d4d.cu130.pt211-cp313-cp313-linux_x86_64.whl
 # add additional-pak.txt to constraints.txt
 # Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
+
 RUN pip list --format=freeze \
         | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
         > /builder-scripts/constraints.txt \
@@ -153,6 +154,12 @@ RUN if [ "$OFFLINE_MODE" = "true" ] ; then \
 #RUN dnf install -y sox
 ## fix seedvr2 video upscaler报错
 RUN dnf install -y openssl
+
+
+RUN ( [ -z "$HTTPS_PROXY" ] || export https_proxy="$HTTPS_PROXY" ) \
+    && mkdir -p /default-comfyui-bundle \
+    && wget -O /default-comfyui-bundle/prompts.sqlite3 \
+        https://github.com/wangweihong/ComfyUI-ToolBox/releases/download/0.0.1/prompts.sqlite3
 
 # fix以下报错
 ## Warning:
