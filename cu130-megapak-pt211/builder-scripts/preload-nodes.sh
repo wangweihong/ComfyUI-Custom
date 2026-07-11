@@ -265,6 +265,9 @@ gcs https://github.com/ostris/ComfyUI-Krea2-Ostris-Edit.git
 # krea2 人物编辑
 gcs https://github.com/lbouaraba/comfyui-krea2edit.git
 
+# bernini studio 视频生成编辑
+gcs https://github.com/CCpt5/ComfyUI-BerniniStudio.git
+
 
 echo "[INFO] Additional custom nodes downloaded successfully"
 
