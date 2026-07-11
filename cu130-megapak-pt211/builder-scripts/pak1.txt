@@ -60,3 +60,7 @@ mediapipe
 spconv
 lpips
 hf_transfer 
+
+# automasic
+psd_tools
+extract_segments

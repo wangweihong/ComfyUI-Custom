@@ -257,5 +257,14 @@ gcs https://github.com/facok/comfyui-krea2-controlnet.git
 # https://www.reddit.com/r/StableDiffusion/comments/1ulomm5/precise_control_of_the_sun_direction_with_this/
 gcs https://github.com/eric-venti-seeds/Sphere-Light-Render-ComfyUI.git
 
+# 多人物lora控制
+gcs https://github.com/yaoliliu/FreeFuse.git
+# krea2 ostris edit, 风格参考
+gcs https://github.com/ostris/ComfyUI-Krea2-Ostris-Edit.git
+
+# krea2 人物编辑
+gcs https://github.com/lbouaraba/comfyui-krea2edit.git
+
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
