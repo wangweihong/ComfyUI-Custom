@@ -31,6 +31,34 @@ gcs() {
     return 1
 }
 
+gcsBranchRename() {
+    local url="$1"
+    local max_attempts=3
+    local attempt=1
+    local wait_time=2
+
+    local branch="$2"
+     local rename="$3"
+
+    while [ $attempt -le $max_attempts ]; do
+        echo "--> [Attempt $attempt/$max_attempts] Cloning $url..."
+        
+        # 尝试执行 git clone，如果成功则直接返回
+        if git clone --depth=1 --branch $branch --no-tags --recurse-submodules --shallow-submodules "$url" "$rename"; then
+            return 0
+        fi
+
+        echo "--> [Warning] Clone failed for $url. Retrying in ${wait_time}s..."
+        sleep $wait_time
+        attempt=$((attempt + 1))
+        wait_time=$((wait_time * 2)) # 指数退避，第一次等2秒，第二次等4秒
+    done
+
+    # 如果达到最大尝试次数仍失败，则触发 set -e 导致脚本退出
+    echo "--> [Error] Failed to clone $url after $max_attempts attempts."
+    return 1
+}
+
 echo "########################################"
 echo "[INFO] Downloading Additional Custom Nodes..."
 echo "########################################"
@@ -257,8 +285,9 @@ gcs https://github.com/facok/comfyui-krea2-controlnet.git
 # https://www.reddit.com/r/StableDiffusion/comments/1ulomm5/precise_control_of_the_sun_direction_with_this/
 gcs https://github.com/eric-venti-seeds/Sphere-Light-Render-ComfyUI.git
 
-# 多人物lora控制
-gcs https://github.com/yaoliliu/FreeFuse.git
+# 多人物lora控制,krea2可以同时使用在一次生图使用多个lora
+gcsBranchRename https://github.com/yaoliliu/FreeFuse.git comfyui freefuse_comfyui
+
 # krea2 ostris edit, 风格参考
 gcs https://github.com/ostris/ComfyUI-Krea2-Ostris-Edit.git
 
