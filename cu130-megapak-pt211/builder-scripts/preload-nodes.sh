@@ -297,6 +297,8 @@ gcs https://github.com/lbouaraba/comfyui-krea2edit.git
 # bernini studio 视频生成编辑
 gcs https://github.com/CCpt5/ComfyUI-BerniniStudio.git
 
+# 图片颜色参考 channel_wise强度设置为1,接近于原图
+gcs https://github.com/DenRakEiw/Latent_Nodes.git
 
 echo "[INFO] Additional custom nodes downloaded successfully"
 
