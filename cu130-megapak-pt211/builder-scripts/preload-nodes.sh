@@ -300,5 +300,23 @@ gcs https://github.com/CCpt5/ComfyUI-BerniniStudio.git
 # 图片颜色参考 channel_wise强度设置为1,接近于原图
 gcs https://github.com/DenRakEiw/Latent_Nodes.git
 
+
+# krea2 prompt styler, 指定krea2生成各种风格的提示词
+# https://www.reddit.com/r/StableDiffusion/comments/1v4u26q/krea_2_styles_wildcards_update/
+gcs https://github.com/Gothdir/ComfyUI-Krea2-PromptStyler
+
+# LTX CrossView-Warp IC-LoRA - 更精确地改变现有视频的摄像机角度和轨道路径
+# https://www.reddit.com/r/StableDiffusion/comments/1v89kih/ltx_crossviewwarp_iclora_change_the_camera_angle/
+gcs https://github.com/cseti007/ComfyUI-CrossViewWarp.git
+
+
+# 3d节点
+# https://www.reddit.com/r/comfyui/comments/1v868dt/nkd_vfx_tools_just_got_an_update_based_on_all/
+#gcs https://github.com/Nekodificador/ComfyUI-NKD-VFX-Tools.git
+
+# PCB版连线
+gcs https://github.com/vtokic/comfyui-cable-management.git
+
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
