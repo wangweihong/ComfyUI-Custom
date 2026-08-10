@@ -317,6 +317,8 @@ gcs https://github.com/cseti007/ComfyUI-CrossViewWarp.git
 # PCB版连线
 gcs https://github.com/vtokic/comfyui-cable-management.git
 
+# pixaroma minimax h3
+gcs https://github.com/pixaroma/ComfyUI-Pixaroma.git
 
 echo "[INFO] Additional custom nodes downloaded successfully"
 
