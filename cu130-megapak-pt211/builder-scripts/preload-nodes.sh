@@ -246,7 +246,7 @@ gcs https://github.com/rainlizard/ComfyUI-Raffle.git
 #gcs https://github.com/Saganaki22/ComfyUI-FishAudioS2.git
 
 # anima pixAI反推（速度块)
-#gcs https://github.com/adbrasi/booru-helper-mini.git
+gcs https://github.com/adbrasi/booru-helper-mini.git
 
 # ltx multi-subject-reference
 gcs https://github.com/liconstudio/ComfyUI-Licon-MSR.git

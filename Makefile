@@ -201,6 +201,7 @@ test-$(1):
 	  -v "$(OUTPUT_PARENT)/output:/root/ComfyUI/output" \
 	  -v  $(OUTPUT_PARENT)/comfyui-ecosystem/workflows:/root/ComfyUI/user/default/workflows \
       -v  $(OUTPUT_PARENT)/comfyui-ecosystem/subgraphs:/root/ComfyUI/user/default/subgraphs \
+      -v  $(MODEL_PARENT)/comfyui_miro_json:/root/ComfyUI/custom_nodes/ComfyUI_Mira/json \
 	  -v "$$$$TEST_DIR/storage-user/user-scripts:/root/user-scripts" \
 	  -e CUDA_LAUNCH_BLOCKING=1 \
 	  -e HTTP_PROXY=$(HPROXY) \
