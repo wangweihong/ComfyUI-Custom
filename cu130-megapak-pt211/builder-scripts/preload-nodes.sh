@@ -320,5 +320,11 @@ gcs https://github.com/vtokic/comfyui-cable-management.git
 # pixaroma minimax h3
 gcs https://github.com/pixaroma/ComfyUI-Pixaroma.git
 
+# minimax脸部修复 https://www.reddit.com/r/StableDiffusion/comments/1vn4uho/ok_this_is_cool_minimax_h3_face_detailer/
+gcs https://github.com/Carasibana/ComfyUI-H3-FaceRefine.git
+
+# minimax h3 R2F 增强
+gcs https://github.com/scottmudge/ComfyUI_MinimaxH3HybridLoader.git
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
