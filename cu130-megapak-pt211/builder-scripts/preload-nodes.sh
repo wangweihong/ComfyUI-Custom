@@ -326,5 +326,9 @@ gcs https://github.com/Carasibana/ComfyUI-H3-FaceRefine.git
 # minimax h3 R2F 增强
 gcs https://github.com/scottmudge/ComfyUI_MinimaxH3HybridLoader.git
 
+
+# 人物皮肤美颜
+gcs https://github.com/chen-zhang-ai/ComfyUI-SkinBeauty-CN.git
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
