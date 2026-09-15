@@ -330,5 +330,15 @@ gcs https://github.com/scottmudge/ComfyUI_MinimaxH3HybridLoader.git
 # 人物皮肤美颜
 gcs https://github.com/chen-zhang-ai/ComfyUI-SkinBeauty-CN.git
 
+# ltx 视频深度图
+gcs https://github.com/yuvraj108c/ComfyUI-Video-Depth-Anything.git
+
+# klein 人物眼睛方向控制
+# https://www.reddit.com/r/StableDiffusion/comments/1wbfptw/precise_control_of_the_eyes_direction_with_this/
+gcs https://github.com/eric-venti-seeds/Eyes_Direction_Lora_Control.git
+
+# minimax 3d镜头控制
+gcs https://github.com/NyckM/3d-Camera-control-H3-Minimax.git   
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
