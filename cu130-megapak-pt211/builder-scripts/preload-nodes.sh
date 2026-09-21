@@ -348,7 +348,7 @@ gcs https://github.com/ethanfel/ComfyUI-H3-Prompt-IDE.git
 
 # krea2 图片颜色参考
 gcs https://github.com/SparknightLLC/ComfyUI-ImageAutotone.git
-gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
+#gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
 
 # minimax face swap 节点
 gcs https://github.com/PGCRT/CRT-Nodes.git
