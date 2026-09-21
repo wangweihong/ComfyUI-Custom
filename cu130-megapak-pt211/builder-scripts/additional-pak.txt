@@ -11,3 +11,6 @@ torchlanc
 
 # LF_EMPTYIMAGE
 svgwrite
+
+# minimax loopsampler
+unifiedefficientloader

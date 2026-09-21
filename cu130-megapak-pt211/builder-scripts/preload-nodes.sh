@@ -340,5 +340,21 @@ gcs https://github.com/eric-venti-seeds/Eyes_Direction_Lora_Control.git
 # minimax 3d镜头控制
 gcs https://github.com/NyckM/3d-Camera-control-H3-Minimax.git   
 
+# minimax h3 提示词生成
+gcs https://github.com/1038lab/ComfyUI-MiniMax-H3-Promptor.git
+
+# minimax h3 提示词生成
+gcs https://github.com/ethanfel/ComfyUI-H3-Prompt-IDE.git
+
+# krea2 图片颜色参考
+gcs https://github.com/SparknightLLC/ComfyUI-ImageAutotone.git
+gcs https://github.com/ltdrdata/ComfyUI-Impact-Subpack.git
+
+# minimax face swap 节点
+gcs https://github.com/PGCRT/CRT-Nodes.git
+
+# minimax h3 loopsampler
+gcs https://github.com/silveroxides/ComfyUI-UtilsCollection.git
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
