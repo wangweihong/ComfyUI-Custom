@@ -21,6 +21,15 @@ else
     echo "[INFO] Using existing ComfyUI in user storage..."
 fi
 
+# Seed user settings for existing ComfyUI installations without replacing user changes.
+if [ ! -e "/root/ComfyUI/user/default/comfy.settings.json" ] && [ ! -L "/root/ComfyUI/user/default/comfy.settings.json" ] ; then
+    mkdir -p /root/ComfyUI/user/default
+    cp --archive --no-clobber "/default-comfyui-bundle/ComfyUI/user/default/comfy.settings.json" "/root/ComfyUI/user/default/comfy.settings.json"
+    echo "[INFO] Copied image-bundled user settings."
+else
+    echo "[INFO] Using existing ComfyUI user settings..."
+fi
+
 # Copy Custom Nodes from cache to workdir if not exist
 cd /root
 if [ ! -f "/root/ComfyUI/custom_nodes/example_node.py.example" ] ; then

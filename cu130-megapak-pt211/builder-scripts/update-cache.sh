@@ -114,15 +114,6 @@ git_clone_retry https://github.com/wallen0322/ComfyUI-SageAttention3.git
 echo "########################################"
 echo "[INFO] Configuring ComfyUI & Manager..."
 
-mkdir -p /default-comfyui-bundle/ComfyUI/user/default
-
-# Enable TAESD preview by default
-cat <<EOF > /default-comfyui-bundle/ComfyUI/user/default/comfy.settings.json
-{
-    "Comfy.Execution.PreviewMethod": "taesd"
-}
-EOF
-
 # Configure Manager
 mkdir -p /default-comfyui-bundle/ComfyUI/user/__manager
 

@@ -186,6 +186,7 @@ RUN df -h \
     && du -ah /root \
     && fd -H . /root/ --min-depth 1 -x rm -rfv
 
+COPY default/comfy.settings.json /default-comfyui-bundle/ComfyUI/user/default/comfy.settings.json
 COPY runner-scripts/.  /runner-scripts/
 
 USER root
