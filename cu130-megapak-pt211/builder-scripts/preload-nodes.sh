@@ -213,8 +213,8 @@ gcs https://github.com/judian17/ComfyUI_YOLO_For_Multi_SDPose_Detection.git
 gcs https://github.com/grmchn/ComfyUI-ProportionChanger.git
 gcs https://github.com/wuwukaka/ComfyUI-BodyRatioMapper.git
 
-# 3d pixal(可以用virsual bruno的?)
-gcs https://github.com/Saganaki22/Pixal3D-ComfyUI.git
+# 3d pixal(可以用virsual bruno的?),已移除
+#gcs https://github.com/Saganaki22/Pixal3D-ComfyUI.git
 
 # anima
 gcs https://github.com/AdamNizol/ComfyUI-Anima-Enhancer.git
