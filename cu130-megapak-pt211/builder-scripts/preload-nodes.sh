@@ -174,8 +174,8 @@ gcs https://github.com/zml-w/ComfyUI-ZML-Image.git
 # ltx prompt relay
 gcs https://github.com/kijai/ComfyUI-PromptRelay.git
 
-# 音效
-gcs https://github.com/Saganaki22/ComfyUI-Woosh.git
+# 音效, 仓库已经移除
+#gcs https://github.com/Saganaki22/ComfyUI-Woosh.git
 
 
 # Reference video
