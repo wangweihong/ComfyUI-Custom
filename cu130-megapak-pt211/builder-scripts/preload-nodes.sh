@@ -356,5 +356,9 @@ gcs https://github.com/PGCRT/CRT-Nodes.git
 # minimax h3 loopsampler
 gcs https://github.com/silveroxides/ComfyUI-UtilsCollection.git
 
+# minimax单图八表情节点
+## https://www.reddit.com/r/StableDiffusion/comments/1x1mp6o/minimax_h3_ref_fizgig_nodes_as_blitz_visual_novel/
+gcs https://github.com/shootthesound/ComfyUI-Fizgig-H3-Still.git
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
