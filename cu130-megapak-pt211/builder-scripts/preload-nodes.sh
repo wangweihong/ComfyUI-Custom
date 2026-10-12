@@ -360,5 +360,9 @@ gcs https://github.com/silveroxides/ComfyUI-UtilsCollection.git
 ## https://www.reddit.com/r/StableDiffusion/comments/1x1mp6o/minimax_h3_ref_fizgig_nodes_as_blitz_visual_novel/
 gcs https://github.com/shootthesound/ComfyUI-Fizgig-H3-Still.git
 
+# krea2像素修复
+# https://www.reddit.com/r/StableDiffusion/comments/1wi0mpd/krea_2_pixel_art_loras_32x32_64x64_128x128/
+gcs https://github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner  
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
