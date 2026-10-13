@@ -364,5 +364,12 @@ gcs https://github.com/shootthesound/ComfyUI-Fizgig-H3-Still.git
 # https://www.reddit.com/r/StableDiffusion/comments/1wi0mpd/krea_2_pixel_art_loras_32x32_64x64_128x128/
 gcs https://github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner  
 
+
+# qwen image 2.1对齐
+gcs https://github.com/zuanfilm/Qalign  
+
+# minimaxh3
+# https://www.reddit.com/r/StableDiffusion/comments/1wtu82e/improved_h3_refmods_better_accuracy_and_low/
+gcs https://github.com/Adudeguyman/ComfyUI-Fantastic-MiniMaxH3-PromptBuilder    
 echo "[INFO] Additional custom nodes downloaded successfully"
 
