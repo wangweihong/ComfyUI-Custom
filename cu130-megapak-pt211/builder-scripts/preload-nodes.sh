@@ -381,8 +381,8 @@ gcs https://github.com/veda-sparse/Veda-on-ComfyUI.git
 gcs https://github.com/Comfy-Org/comfy-kitchen.git
 gcs https://github.com/kijai/ComfyUI-KJNodes.git
 
-
-
+# 不改变loadImage节点的前提下，提供load image gallery能力
+gcs https://github.com/laurigates/comfyui-gallery-loader
 
 echo "[INFO] Additional custom nodes downloaded successfully"
 
