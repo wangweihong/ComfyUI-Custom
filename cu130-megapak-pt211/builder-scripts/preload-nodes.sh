@@ -375,8 +375,11 @@ gcs https://github.com/Adudeguyman/ComfyUI-Fantastic-MiniMaxH3-PromptBuilder
 # 像素修复
 gcs https://github.com/Mozer/ComfyUI-PixelDriftFix
 
-
-
+# minimax 加速方案
+gcs https://github.com/zechengtang/Spark-H3.git
+gcs https://github.com/veda-sparse/Veda-on-ComfyUI.git
+gcs https://github.com/Comfy-Org/comfy-kitchen.git
+gcs https://github.com/kijai/ComfyUI-KJNodes.git
 
 
 
