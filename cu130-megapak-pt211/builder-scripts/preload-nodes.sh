@@ -371,5 +371,15 @@ gcs https://github.com/zuanfilm/Qalign
 # minimaxh3
 # https://www.reddit.com/r/StableDiffusion/comments/1wtu82e/improved_h3_refmods_better_accuracy_and_low/
 gcs https://github.com/Adudeguyman/ComfyUI-Fantastic-MiniMaxH3-PromptBuilder    
+
+# 像素修复
+gcs https://github.com/Mozer/ComfyUI-PixelDriftFix
+
+
+
+
+
+
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
