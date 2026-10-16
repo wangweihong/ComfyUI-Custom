@@ -273,7 +273,13 @@
     "Comfy.Queue.History.Expanded": true,
     "Comfy.Workflow.WorkflowTabsPosition": "Sidebar",
     "Comfy.LinkRenderMode": 64,
-    "Comfy.RightSidePanel.IsOpen": false,
+    "Comfy.RightSidePanel.IsOpen": true,
     "Comfy.PreviewMethod": "taesd",
-    "preview_method": "taesd"
+    "preview_method": "taesd",
+    "Comfy.InstalledVersion": "1.53.10",
+    "Comfy.TutorialCompleted": true,
+    "Comfy.Templates.SortBy": "popular",
+    "Comfy.Locale": "zh",
+    "Comfy.Minimap.Visible": false,
+    "ImageBrowser.AllowAbsolutePathReads": true
 }
