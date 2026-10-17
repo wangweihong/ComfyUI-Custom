@@ -19,7 +19,8 @@
 
 ARG REGISTRY=registry.cn-hangzhou.aliyuncs.com
 ARG REPO_NAME=eazycloud
-FROM ${REGISTRY}/${REPO_NAME}/comfyui-boot:base-cu130-pt211-cache
+ARG INSTALL_3DGS=false
+FROM ${REGISTRY}/${REPO_NAME}/comfyui-boot:base-cu130-pt211-cache AS common
 
 LABEL maintainer="wangweihong <wangweihong2018@qq.com>"
 
@@ -194,3 +195,95 @@ WORKDIR /root
 EXPOSE 8188
 ENV CLI_ARGS=""
 CMD ["bash","/runner-scripts/entrypoint.sh"]
+
+# ToolBox owns nodes, examples and docs in both dependency variants.
+RUN set -eu; \
+    toolbox=/default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI-ToolBox; \
+    workflows=/default-comfyui-bundle/ComfyUI/user/default/workflows/006视频生成/minimaxh3/单图转3DGS_COLMAP_Brush; \
+    test -f "$toolbox/nodes/3dgs/sfm_worker.py"; \
+    mkdir -p "$workflows/docs" /default-comfyui-bundle/ComfyUI/input; \
+    cp -a "$toolbox/examples/3dgs/workflows/." "$workflows/"; \
+    cp -a "$toolbox/docs/3dgs/." "$workflows/docs/"; \
+    cp -a "$toolbox/examples/3dgs/assets/." /default-comfyui-bundle/ComfyUI/input/
+
+# BuildKit only evaluates the selected branch. The default image never downloads
+# or installs optional native dependencies. ToolBox nodes/resources remain present.
+FROM common AS feature-3dgs-false
+
+FROM common AS feature-3dgs-true
+ARG OFFLINE_MODE=false
+ARG HTTP_PROXY
+ARG HTTPS_PROXY
+RUN --mount=type=bind,source=3dgs.sha256,target=/3dgs.sha256,ro \
+    --mount=type=bind,source=offline-cache/3dgs,target=/feature-artifacts,ro \
+    --mount=type=cache,target=/root/.cache/pip <<'SH'
+set -eu
+python3.13 - <<'PY'
+import platform, sys
+assert platform.system() == 'Linux' and platform.machine() in ('x86_64', 'amd64')
+assert sys.version_info[:2] == (3, 13), '3DGS requires Linux amd64 and Python 3.13'
+PY
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+release=https://github.com/wangweihong/Wheels-Containerfiles/releases/download/3dgs-v1
+wheel=pycolmap-4.2.1-cp313-cp313-manylinux_2_28_x86_64.whl
+brush=brush-app-x86_64-unknown-linux-gnu.tar.xz
+loader=vulkan-loader-1.4.328.1-1.el10.x86_64.rpm
+case "$OFFLINE_MODE" in
+    true)
+        for file in "$wheel" "$brush" "$loader"; do
+            if [ ! -f "/feature-artifacts/$file" ]; then
+                echo "Missing offline 3DGS artifact: $file" >&2; exit 1
+            fi
+            cp "/feature-artifacts/$file" "$work/$file"
+        done
+        ;;
+    false)
+        export https_proxy="${HTTPS_PROXY:-${https_proxy:-}}"
+        export http_proxy="${HTTP_PROXY:-${http_proxy:-}}"
+        for file in "$wheel" "$brush" "$loader"; do
+            wget --no-verbose --https-only --tries=3 --timeout=120 -O "$work/$file" "$release/$file"
+        done
+        ;;
+    *) echo 'OFFLINE_MODE must be true or false for 3DGS dependencies' >&2; exit 1 ;;
+esac
+cd "$work"
+sha256sum -c /3dgs.sha256
+dnf -y --disablerepo='*' --setopt=install_weak_deps=False install "$work/$loader"
+dnf clean all
+PIP_USER=false python3.13 -m pip install --no-index --no-deps "$work/$wheel"
+python3.13 - <<'PY'
+import tarfile
+with tarfile.open('brush-app-x86_64-unknown-linux-gnu.tar.xz') as archive:
+    members = [archive.getmember('brush-app-x86_64-unknown-linux-gnu/' + name)
+               for name in ('brush_app', 'LICENSE')]
+    assert all(member.isfile() for member in members), 'Invalid Brush archive members'
+    archive.extractall(members=members, filter='data')
+PY
+install -D -m 755 brush-app-x86_64-unknown-linux-gnu/brush_app /opt/3dgs/bin/brush_app
+install -D -m 644 brush-app-x86_64-unknown-linux-gnu/LICENSE /opt/3dgs/licenses/Brush-LICENSE
+test "$(/opt/3dgs/bin/brush_app --version)" = 'brush-cli 0.3.0'
+/opt/3dgs/bin/brush_app --help >/dev/null
+linked=$(ldd /opt/3dgs/bin/brush_app)
+case "$linked" in *'not found'*) echo "$linked" >&2; exit 1 ;; esac
+cp /3dgs.sha256 /opt/3dgs/SHA256SUMS
+python3.13 - <<'PY'
+import ctypes, json
+from pathlib import Path
+import pycolmap, numpy, PIL, cv2, torch
+assert pycolmap.__version__ == '4.2.1' and not pycolmap.has_cuda
+assert callable(pycolmap.global_mapping) and callable(pycolmap.incremental_mapping)
+ctypes.CDLL('libvulkan.so.1')
+Path('/opt/3dgs/manifest.json').write_text(json.dumps(dict(
+    release='https://github.com/wangweihong/Wheels-Containerfiles/releases/tag/3dgs-v1',
+    pycolmap_version=pycolmap.__version__, brush_version='0.3.0',
+    base_python_packages={k: m.__version__ for k,m in [('numpy',numpy),('Pillow',PIL),('opencv',cv2),('torch',torch)]},
+    driver_libraries_bundled=False, models_bundled=False), indent=2)+'\n')
+PY
+cd /
+SH
+
+FROM feature-3dgs-${INSTALL_3DGS} AS final
+ARG INSTALL_3DGS
+RUN case "$INSTALL_3DGS" in true|false) ;; \
+    *) echo 'INSTALL_3DGS must be true or false' >&2; exit 1 ;; esac

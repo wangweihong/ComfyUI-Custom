@@ -22,6 +22,12 @@ TEST_PORT ?= 8188
 
 
 OFFLINE_MODE ?= false
+INSTALL_3DGS ?= false
+ifneq ($(INSTALL_3DGS),true)
+ifneq ($(INSTALL_3DGS),false)
+$(error INSTALL_3DGS must be true or false)
+endif
+endif
 
 # Qwen2511-edit设置--fast会出现花图
 # --disable-xformers可以解决xformers无法在cu130-py3.11-pt211 5090架构	运行的问题
@@ -64,7 +70,7 @@ endef
 
 # Function to get component tag
 define get_component_tag
-$(shell basename "$(call get_component_dir,$(1))")
+$(shell basename "$(call get_component_dir,$(1))")$(if $(and $(filter cu130-megapak-pt211,$(1)),$(filter true,$(INSTALL_3DGS))),-3dgs)
 endef
 
 .PHONY: help build-all push-all clean-all test-all $(addprefix build-,$(COMPONENTS)) $(addprefix push-,$(COMPONENTS)) $(addprefix clean-,$(COMPONENTS)) $(addprefix test-,$(COMPONENTS))
@@ -78,6 +84,7 @@ help:
 	@echo "  make clean-<component>     - Remove specific component images"
 	@echo "  make test-<component>      - Run test for specific component"
 	@echo "  make build-all             - Build all components"
+	@echo "  make build-cu130-megapak-pt211 INSTALL_3DGS=true - Install optional 3DGS runtime dependencies (-3dgs tag); nodes come from ToolBox"
 	@echo "  make push-all              - Build and push all components"
 	@echo "  make clean-all             - Remove all component images"
 	@echo "  make test-all              - Run tests for all components"
@@ -129,6 +136,7 @@ build-$(1):
 		--build-arg REGISTRY=$(REGISTRY) \
 		--build-arg MAX_JOBS=$(MAX_JOBS) \
 		--build-arg OFFLINE_MODE=$(OFFLINE_MODE) \
+		--build-arg INSTALL_3DGS=$(INSTALL_3DGS) \
 		--build-arg TORCH_CUDA_ARCH_LIST='$(TORCH_CUDA_ARCH_LIST)' \
 		-t $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG \
 		-t $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG-$(DATE) \
@@ -143,7 +151,7 @@ clean-$(1):
 	@COMPONENT_TAG="$(call get_component_tag,$(1))"; \
 	docker rmi $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG 2>/dev/null || true; \
 	docker rmi $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG-$(DATE) 2>/dev/null || true; \
-	OLD_IMAGES=$$$$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "$(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG-" | grep -v "-$(DATE)$$$$"); \
+	OLD_IMAGES=$$$$(docker images --format "{{.Repository}}:{{.Tag}}" | awk -v prefix="$(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG-" -v today="$(DATE)" 'index($$$$0,prefix)==1 { stamp=substr($$$$0,length(prefix)+1); if (stamp ~ /^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$$$$/ && stamp != today) print }'); \
 	if [ ! -z "$$$$OLD_IMAGES" ]; then \
 		for img in $$$$OLD_IMAGES; do docker rmi $$$$img 2>/dev/null || true; done; \
 	fi
@@ -243,9 +251,9 @@ push-list:
 
 status:
 	@echo "Current build status (Date: $(DATE)):"
-	@for comp in $(COMPONENTS); do \
-		TAG="$(call get_component_tag,$$comp)"; \
-		if docker images --format "{{.Repository}}:{{.Tag}}" | grep -q "$(IMAGE_NAME):$$TAG$$"; then \
+	@for entry in $(foreach comp,$(COMPONENTS),$(comp):$(call get_component_tag,$(comp))); do \
+		comp="$${entry%%:*}"; TAG="$${entry#*:}"; \
+		if docker images --format "{{.Repository}}:{{.Tag}}" | grep -Fxq "$(REGISTRY)/$(IMAGE_NAME):$$TAG"; then \
 			echo "  $$comp: ✓ Built ($$TAG)"; \
 		else \
 			echo "  $$comp: ✗ Not built"; \
