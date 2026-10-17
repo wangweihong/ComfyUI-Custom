@@ -70,6 +70,9 @@ gcs https://github.com/visualbruno/ComfyUI-Trellis2.git
 
 # toolbox
 gcs https://github.com/wangweihong/ComfyUI-ToolBox.git
+# Pin the reviewed 3DGS source so both dependency variants have the same nodes/resources.
+git -C ComfyUI-ToolBox fetch --depth=1 origin 1a131682cfe467f2211626007c63c7678f6c3db9
+git -C ComfyUI-ToolBox checkout --detach 1a131682cfe467f2211626007c63c7678f6c3db9
 # audio (不支持cu130)
 #gcs https://github.com/wangweihong/ComfyUI-faster-whisper.git
 

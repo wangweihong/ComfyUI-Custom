@@ -1,0 +1,7 @@
+# docker compose -f docker-compose.yml -f docker-compose.3dgs.yml build
+services:
+  comfyui:
+    image: "registry.cn-hangzhou.aliyuncs.com/eazycloud/comfyui-custom:cu130-megapak-pt211-3dgs"
+    build:
+      args:
+        INSTALL_3DGS: "true"

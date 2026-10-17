@@ -7,6 +7,11 @@ on:
         description: "要构建的组件列表 (逗号分隔，例如: cu130-megapak-pt211,cu130-slim)"
         required: false
         default: "cu130-megapak-pt211"
+      install_3dgs:
+        description: "安装3DGS运行依赖（节点及示例始终由ToolBox提供；使用-3dgs标签）"
+        type: boolean
+        required: false
+        default: false
   push:
     branches:
       - main
@@ -24,6 +29,7 @@ env:
   IMAGE_NAME: eazycloud/comfyui-custom
   MAX_JOBS: 4
   TORCH_CUDA_ARCH_LIST: "8.0;8.6;10.0;12.0;12.0+PTX"
+  INSTALL_3DGS: ${{ github.event_name == 'workflow_dispatch' && inputs.install_3dgs && 'true' || 'false' }}
 
 jobs:
   build-and-push:
@@ -32,6 +38,9 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Check optional 3DGS build feature
+        run: python3 -m unittest discover -s cu130-megapak-pt211/tests -v
 
       # === 前置清理与状态打印 ===
       - name: Cleanup and System Check
@@ -89,6 +98,7 @@ jobs:
               REGISTRY="${{ env.REGISTRY }}" \
               IMAGE_NAME="${{ env.IMAGE_NAME }}" \
               MAX_JOBS="${{ env.MAX_JOBS }}" \
+              INSTALL_3DGS="$INSTALL_3DGS" \
               TORCH_CUDA_ARCH_LIST="${{ env.TORCH_CUDA_ARCH_LIST }}" \
               LIST="${{ github.event.inputs.components }}"
           else
@@ -97,5 +107,6 @@ jobs:
               REGISTRY="${{ env.REGISTRY }}" \
               IMAGE_NAME="${{ env.IMAGE_NAME }}" \
               MAX_JOBS="${{ env.MAX_JOBS }}" \
+              INSTALL_3DGS="$INSTALL_3DGS" \
               TORCH_CUDA_ARCH_LIST="${{ env.TORCH_CUDA_ARCH_LIST }}"
           fi
