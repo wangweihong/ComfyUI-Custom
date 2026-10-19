@@ -14,3 +14,12 @@ svgwrite
 
 # minimax loopsampler
 unifiedefficientloader
+
+# minimax 加速
+comfy-kitchen
+
+# crt audio compresser依赖
+pedalboard
+
+# edge tts依赖
+edge-tts
