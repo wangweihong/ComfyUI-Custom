@@ -141,7 +141,8 @@ gcs https://github.com/judian17/ComfyUI-SDPose-OOD.git
 
 # flux2klein enhancer
 ## https://www.reddit.com/r/StableDiffusion/comments/1somo2r/coming_up_tomorrow_flux2klein_identity_transfer/
-gcs https://github.com/capitan01R/ComfyUI-Flux2Klein-Enhancer.git
+# 作者已经移除仓库，迁移到ToolBox
+#gcs https://github.com/capitan01R/ComfyUI-Flux2Klein-Enhancer.git
 
 # convas
 ## from https://www.reddit.com/r/comfyui/comments/1soqoz6/comfy_canvas_v10/
