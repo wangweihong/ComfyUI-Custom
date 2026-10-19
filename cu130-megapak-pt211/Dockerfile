@@ -24,6 +24,9 @@ FROM ${REGISTRY}/${REPO_NAME}/comfyui-boot:base-cu130-pt211-cache AS common
 
 LABEL maintainer="wangweihong <wangweihong2018@qq.com>"
 
+# NVIDIA Container Toolkit mounts NVENC/NVDEC driver libraries at container creation.
+ENV NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
+
 ARG USING_GITHUB_ACTIONS=false
 #ARG PIP_INDEX_URL="https://mirrors.cernet.edu.cn/pypi/web/simple"
 ARG PIP_ROOT_USER_ACTION='ignore'
@@ -67,6 +70,12 @@ RUN cd /usr/local/lib/python3.13/site-packages/comfyui_manager/legacy/ \
 
 ################################################################################
 # add additional custom nodes and its dependencies
+
+# FlashVSR Triton source is maintained/built in Wheels-Containerfiles.
+# Keep CUDA/PyTorch/Triton dependencies supplied by this base image.
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} --no-deps \
+        'https://github.com/wangweihong/Wheels-Containerfiles/releases/download/flashvsr-attn/flashvsr_attn-0.1.0-py3-none-any.whl#sha256=554e237212c97841385a5004f2c5bee0cf445068197ae31d7a8a85580fd55e46'
 
 # 3d trellis2 wheels
 RUN --mount=type=cache,target=/root/.cache/pip \
@@ -155,6 +164,11 @@ RUN if [ "$OFFLINE_MODE" = "true" ] ; then \
 #RUN dnf install -y sox
 ## fix seedvr2 video upscaler报错
 RUN dnf install -y openssl
+
+# FlashVSR video decoding, segment merging and FFV1/libx264 encoding.
+RUN dnf install -y ffmpeg \
+    && command -v ffmpeg \
+    && command -v ffprobe
 
 
 RUN ( [ -z "$HTTPS_PROXY" ] || export https_proxy="$HTTPS_PROXY" ) \

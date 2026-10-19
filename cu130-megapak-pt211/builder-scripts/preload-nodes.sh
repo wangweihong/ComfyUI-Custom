@@ -65,6 +65,20 @@ echo "########################################"
 
 cd /default-comfyui-bundle/ComfyUI/custom_nodes
 
+# FlashVSR+ Turbo (Triton); flashvsr-attn is installed from Release in Dockerfile.
+if [ ! -d ComfyUI_FlashVSR ]; then
+    gcs https://github.com/smthemex/ComfyUI_FlashVSR.git
+fi
+git -C ComfyUI_FlashVSR fetch --depth=1 origin 153cf03343a116c85aee40d291125921cc33935a
+git -C ComfyUI_FlashVSR checkout --detach 153cf03343a116c85aee40d291125921cc33935a
+
+# The base image normally includes VHS; download it only when missing.
+if [ ! -d ComfyUI-VideoHelperSuite ]; then
+    gcs https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+    git -C ComfyUI-VideoHelperSuite fetch --depth=1 origin 4d907bee61e92c2e65af3bd6383a4e4d356126d1
+    git -C ComfyUI-VideoHelperSuite checkout --detach 4d907bee61e92c2e65af3bd6383a4e4d356126d1
+fi
+
 # 3d trellies.2
 gcs https://github.com/visualbruno/ComfyUI-Trellis2.git
 

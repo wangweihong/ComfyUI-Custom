@@ -26,6 +26,7 @@ services:
       - "./storage-user/user-scripts:/root/user-scripts"
     environment:
       - CLI_ARGS=
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility,video
       # - HF_ENDPOINT=http://hf-mirror.com
       # - HTTP_PROXY=$HTTP_PROXY
       # - HTTPS_PROXY=$HTTPS_PROXY

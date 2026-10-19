@@ -68,3 +68,27 @@ hf_transfer
 # latent color match
 color-matcher>=0.2.0
 kornia>=0.6.0
+
+# FlashVSR+ Turbo / local 2K, 4K and tiled 8K workflows.
+# Keep the base image's CUDA/PyTorch/Triton/flash-attn wheels.
+# opencv-python, modelscope and transformers are already declared above.
+# flashvsr-attn wheel is published by Wheels-Containerfiles and installed in Dockerfile.
+diffusers>=0.37.1
+accelerate
+einops
+huggingface-hub
+safetensors
+numpy
+pillow
+sentencepiece
+protobuf
+ftfy
+pandas
+tqdm
+imageio
+imageio-ffmpeg
+av
+psutil
+websocket-client
+# Provides the pynvml import used by the local resource sampler.
+nvidia-ml-py

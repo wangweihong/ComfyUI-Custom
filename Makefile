@@ -192,6 +192,7 @@ test-$(1):
 	docker run -it  \
 	  --name comfyui-test-$$$$COMPONENT_TAG \
 	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video \
 	  -p $(TEST_PORT):8188 \
 	  -v "$$$$TEST_DIR/storage-cache/dot-cache:/root/.cache" \
 	  -v "$$$$TEST_DIR/storage-cache/dot-config:/root/.config" \
@@ -225,6 +226,7 @@ simpletest-$(1):
 	docker run -it  \
 	  --name comfyui-test-$$$$COMPONENT_TAG \
 	  --gpus all \
+	  -e NVIDIA_DRIVER_CAPABILITIES=compute,utility,video \
 	  -p $(TEST_PORT):8188 \
 	  -v "$(MODEL_PARENT)/models:/root/ComfyUI/models" \
 	  -v "$(MODEL_PARENT)/u2net:/root/.u2net" \
