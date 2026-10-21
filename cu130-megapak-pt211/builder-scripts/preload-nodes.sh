@@ -218,7 +218,7 @@ gcs https://github.com/jtydhr88/ComfyUI-mesh2motion.git
 gcs https://github.com/TenStrip/10S-Comfy-nodes.git
 
 # llm api
-gcs https://github.com/heshengtao/comfyui_LLM_party.git
+gcs https://github.com/wangweihong/comfyui_LLM_party.git
 
 # zit 图像参考
 gcs https://github.com/WuMIn259/ComfyUI-ZTurbo-Style-Transfer.git
@@ -402,6 +402,9 @@ gcs https://github.com/veda-sparse/Veda-on-ComfyUI.git
 gcs https://github.com/laurigates/comfyui-gallery-loader
 # 支持image browser以及查看资产元数据
 gcs https://github.com/laurigates/comfyui-image-browser.git
+
+# ref mode
+gcs https://github.com/Luisacaotica/ComfyUI-MiniMaxH3Mod
 
 echo "[INFO] Additional custom nodes downloaded successfully"
 

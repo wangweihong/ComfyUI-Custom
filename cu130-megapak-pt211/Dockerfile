@@ -189,6 +189,8 @@ RUN dnf install -y mesa-libGL mesa-libGL-devel
 # This node will cause ltx error when running,report "RuntimeError: The size of tensor a (28160) must match the size of tensor b (3619968) at non-singleton dimension 2"
 RUN rm -rf /default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI_smZNodes
 RUN rm -rf /default-comfyui-bundle/ComfyUI/custom_nodes/VideoX-Fun
+RUN rm -rf /default-comfyui-bundle/ComfyUI/custom_nodes/ComfyUI_InstantID
+
 
 # https://github.com/kijai/ComfyUI-DepthAnythingV2/issues/27
 # 解决更好的高斯流 DeepAnythingV2报错的问题
