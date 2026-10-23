@@ -406,5 +406,8 @@ gcs https://github.com/laurigates/comfyui-image-browser.git
 # ref mode
 gcs https://github.com/Luisacaotica/ComfyUI-MiniMaxH3Mod
 
+# breeze
+gcs https://github.com/Saganaki22/ComfyUI-Breeze-TTS-2
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
