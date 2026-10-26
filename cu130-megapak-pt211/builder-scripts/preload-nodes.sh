@@ -413,5 +413,8 @@ gcs https://github.com/Saganaki22/ComfyUI-Breeze-TTS-2
 # moss studio
 gcs https://github.com/wangweihong/ComfyUI-MossLayoutStudio.git
 
+# 连线捆绑
+gcs https://github.com/safzanpirani/comfyui-zip-ties
+
 echo "[INFO] Additional custom nodes downloaded successfully"
 
