@@ -388,7 +388,8 @@ gcs https://github.com/zuanfilm/Qalign
 
 # minimaxh3
 # https://www.reddit.com/r/StableDiffusion/comments/1wtu82e/improved_h3_refmods_better_accuracy_and_low/
-gcs https://github.com/Adudeguyman/ComfyUI-Fantastic-MiniMaxH3-PromptBuilder    
+# gcs https://github.com/Adudeguyman/ComfyUI-Fantastic-MiniMaxH3-PromptBuilder  
+gcs https://github.com/wangweihong/ComfyUI-Fantastic-MiniMaxH3-PromptBuilder  
 
 # 像素修复
 gcs https://github.com/Mozer/ComfyUI-PixelDriftFix
@@ -408,6 +409,9 @@ gcs https://github.com/Luisacaotica/ComfyUI-MiniMaxH3Mod
 
 # breeze
 gcs https://github.com/Saganaki22/ComfyUI-Breeze-TTS-2
+
+# moss studio
+gcs https://github.com/wangweihong/ComfyUI-MossLayoutStudio.git
 
 echo "[INFO] Additional custom nodes downloaded successfully"
 
