@@ -126,6 +126,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # add additional-pak.txt to constraints.txt
 # Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
 
+# 用于minimax spark
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
+        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/comfy-kitchen/comfy_kitchen-0.2.37+spark.h3.sm120.cu130.1-cp312-abi3-linux_x86_64.whl
+
+
 RUN pip list --format=freeze \
         | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
         > /builder-scripts/constraints.txt \
