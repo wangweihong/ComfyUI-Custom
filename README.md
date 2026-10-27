@@ -38,3 +38,9 @@ docker compose -f docker-compose.yml -f docker-compose.3dgs.yml build
 ## FlashVSR 视频超分依赖
 
 cu130-megapak-pt211 集成 FlashVSR+ Turbo / Triton 和本地 2K、4K、分块 8K 工作流所需依赖，容器启用 NVIDIA `compute,utility,video` 能力。[依赖分工、模型挂载与容器重建说明](cu130-megapak-pt211/FLASHVSR.md)。
+
+## Spark H3 后端
+
+核心 `comfy-kitchen` 沿用 ComfyUI 要求的版本。Spark 的 SM120 / CUDA 13.0 定制算子以 `comfyui_spark_cuda` 私有包提供，不替换核心依赖或注册为全局 CUDA 后端；已有 Spark 节点目录在启动时应用相同适配。
+
+离线构建需将 `comfy_kitchen-0.2.37+spark.h3.sm120.cu130.1-cp312-abi3-linux_x86_64.whl` 放入 `cu130-megapak-pt211/offline-cache/spark/`。在线和离线构建均校验固定 SHA256；不要将该旧 wheel 全局 pip 安装到依赖 0.2.39 的环境。

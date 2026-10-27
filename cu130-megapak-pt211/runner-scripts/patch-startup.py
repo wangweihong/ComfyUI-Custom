@@ -61,6 +61,25 @@ def patch_llm_party(path: Path) -> None:
     save_patch(path, original, patched)
 
 
+def patch_spark(path: Path) -> None:
+    original = path.read_text(encoding="utf-8")
+    # Core kitchen retains int8_decode and its CUDA registry; Spark uses only
+    # its separately named private extension from the older custom wheel.
+    patched = replace_once(
+        original,
+        "from comfy_kitchen.backends.cuda import spark_attn",
+        "from comfyui_spark_cuda import spark_attn",
+        path,
+    )
+    patched = replace_once(
+        patched,
+        'controller.backend = "comfy-kitchen-spark-global"',
+        'controller.backend = "comfy-kitchen-spark-private"',
+        path,
+    )
+    save_patch(path, original, patched)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--manager", action="store_true")
@@ -73,6 +92,11 @@ def main() -> None:
         path = args.nodes_dir / "comfyui_LLM_party" / "install.py"
         if path.is_file():
             patch_llm_party(path)
+        # Upstream's installer also uses ComfyUI-Spark-H3 as the folder name.
+        for name in ("Spark-H3", "ComfyUI-Spark-H3"):
+            path = args.nodes_dir / name / "comfyui_backend.py"
+            if path.is_file():
+                patch_spark(path)
 
 
 if __name__ == "__main__":

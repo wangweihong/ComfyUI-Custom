@@ -126,16 +126,12 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 # add additional-pak.txt to constraints.txt
 # Generate a version constraints file to pin PyTorch (prevent later installs from changing its version)
 
-# 用于minimax spark
-RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install ${HTTPS_PROXY:+--proxy $HTTPS_PROXY} \
-        https://github.com/wangweihong/Wheels-Containerfiles/releases/download/comfy-kitchen/comfy_kitchen-0.2.37+spark.h3.sm120.cu130.1-cp312-abi3-linux_x86_64.whl
-
-
+# comfy-kitchen 必须与 ComfyUI requirements.txt 匹配。
+# Spark 的 0.2.37 定制 wheel 缺少 0.42.1 核心启动必需的 int8_decode，不能全局覆盖官方依赖。
 RUN pip list --format=freeze \
-        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1} $1 in want{print $1 "==" $2}' \
+        | awk -F== 'BEGIN{want["torch"]=1;want["torchvision"]=1;want["torchaudio"]=1;want["comfy-kitchen"]=1} {name=$1;gsub(/_/,"-",name)} name in want{print $1 "==" $2}' \
         > /builder-scripts/constraints.txt \
-    && echo "Pinned PyTorch version:" \
+    && echo "Pinned core package versions:" \
     && cat /builder-scripts/constraints.txt
 
 # Additional custom nodes and dependencies
@@ -204,6 +200,26 @@ RUN pip3 uninstall xformers -y
 ###############################################################################
 # offline nodes
 COPY _nodes/. /default-comfyui-bundle/ComfyUI/custom_nodes/
+
+# Spark 的 0.2.37 wheel 仅提供私有 SM120/CUDA 13.0 算子，绝不通过 pip 安装或覆盖核心 kitchen。
+# 只提取 CUDA 包装和扩展，去掉全局注册；核心继续使用 ComfyUI requirements.txt 指定的版本。
+RUN --mount=type=bind,source=offline-cache/spark,target=/spark-wheels,ro <<'SH'
+set -eu
+wheel=comfy_kitchen-0.2.37+spark.h3.sm120.cu130.1-cp312-abi3-linux_x86_64.whl
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+case "$OFFLINE_MODE" in
+    true) cp "/spark-wheels/$wheel" "$work/$wheel" ;;
+    false)
+        export https_proxy="${HTTPS_PROXY:-${https_proxy:-}}"
+        wget --no-verbose --https-only --tries=3 --timeout=120 \
+            -O "$work/$wheel" \
+            "https://github.com/wangweihong/Wheels-Containerfiles/releases/download/comfy-kitchen/$wheel"
+        ;;
+    *) echo 'OFFLINE_MODE must be true or false for Spark dependencies' >&2; exit 1 ;;
+esac
+python3.13 /builder-scripts/install-spark-backend.py --wheel "$work/$wheel"
+SH
 ################################################################################
 RUN df -h \
     && du -ah /root \
@@ -215,9 +231,15 @@ COPY runner-scripts/.  /runner-scripts/
 # Apply after all package installs and both online/offline node-copy paths.
 # 修复 ComfyUI-Manager：PIP_USER=true 导致 pip list 漏查系统包，误报缺少 PyTorch/前端并触发依赖修复。
 # 修复 comfyui_LLM_party：将 py-cord[voice] 当作发行包名检测，导致启动时重复执行 pip install。
+# 修复 Spark-H3：将 Spark 调用接到私有 CUDA 扩展，避免降级核心 comfy-kitchen。
 RUN python3.13 /runner-scripts/patch-startup.py --manager \
         --nodes-dir /default-comfyui-bundle/ComfyUI/custom_nodes \
     && python3.13 -c 'import kgen, discord, nacl, davey'
+
+# 检查真正的核心导入链，防止节点依赖降级导致镜像构建成功但服务无法启动。
+# 使用 CPU 模式，构建时不依赖 GPU 或宿主机驱动。
+RUN cd /default-comfyui-bundle/ComfyUI \
+    && python3.13 -c 'from comfy.cli_args import args; args.cpu = True; import execution; import nodes; from comfy_kitchen.int8_decode import Int8DecodeCache; import comfyui_spark_cuda as spark; assert callable(spark.spark_attn) and hasattr(spark._C, "spark_attn")'
 
 # Dependencies are bundled; TIPO must not resolve/download them at startup.
 ENV TIPO_NO_AUTO_INSTALL=1

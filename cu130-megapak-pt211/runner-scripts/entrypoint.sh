@@ -144,6 +144,7 @@ export TIPO_NO_AUTO_INSTALL="${TIPO_NO_AUTO_INSTALL:-1}"
 # Apply the same idempotent fix to that source without replacing user config.
 # 修复 ComfyUI-Manager 在 PIP_USER=true 时漏查系统包的问题，避免误报缺依赖并触发修复。
 # 修复持久化卷中旧版 comfyui_LLM_party 对 py-cord[voice] 的错误检测，避免重复执行 pip install。
+# 修复已有 Spark-H3 节点目录：只调用镜像内的私有 Spark CUDA 扩展，保留核心 kitchen。
 python3.13 /runner-scripts/patch-startup.py --manager --nodes-dir /root/ComfyUI/custom_nodes
 startup_stage "Startup compatibility fixes"
 
