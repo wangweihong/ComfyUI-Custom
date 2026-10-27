@@ -1,0 +1,3 @@
+# Install at build time; these packages must not be resolved during startup.
+py-cord[voice]==2.8.1
+tipo-kgen==0.3.1

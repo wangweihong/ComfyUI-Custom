@@ -2,6 +2,13 @@
 
 set -e
 
+startup_started=$SECONDS
+stage_started=$SECONDS
+startup_stage() {
+    echo "[STARTUP] $1: $((SECONDS - stage_started))s (total $((SECONDS - startup_started))s)"
+    stage_started=$SECONDS
+}
+
 echo "########################################"
 
 # Copy ComfyUI from cache to workdir if not exist
@@ -20,6 +27,7 @@ if [ ! -f "/root/ComfyUI/main.py" ] ; then
 else
     echo "[INFO] Using existing ComfyUI in user storage..."
 fi
+startup_stage "ComfyUI setup"
 
 # Seed user settings for existing ComfyUI installations without replacing user changes.
 if [ ! -e "/root/ComfyUI/user/default/comfy.settings.json" ] && [ ! -L "/root/ComfyUI/user/default/comfy.settings.json" ] ; then
@@ -29,23 +37,35 @@ if [ ! -e "/root/ComfyUI/user/default/comfy.settings.json" ] && [ ! -L "/root/Co
 else
     echo "[INFO] Using existing ComfyUI user settings..."
 fi
+startup_stage "User settings"
 
 # Copy Custom Nodes from cache to workdir if not exist
 cd /root
-if [ ! -f "/root/ComfyUI/custom_nodes/example_node.py.example" ] ; then
+if [ ! -f "/root/ComfyUI/custom_nodes/.image-nodes-initialized" ] ; then
     mkdir -p /root/ComfyUI/custom_nodes
-    # 'cp --archive': all file timestamps and permissions will be preserved
-    # 'cp --update=none': do not overwrite
-    if cp --archive --update=none "/default-comfyui-bundle/ComfyUI/custom_nodes/." "/root/ComfyUI/custom_nodes/" ; then
-        echo "[INFO] Setting up Custom Nodes..."
-        echo "[INFO] Using image-bundled Custom Nodes (copied to workdir)."
+    # Adopt old initialized volumes without restoring deliberately removed nodes.
+    # An interrupted copy keeps its in-progress marker and must be retried.
+    if [ -f "/root/ComfyUI/custom_nodes/example_node.py.example" ] && [ ! -f "/root/ComfyUI/custom_nodes/.image-nodes-copying" ]; then
+        touch /root/ComfyUI/custom_nodes/.image-nodes-initialized
+        echo "[INFO] Adopted existing Custom Nodes in user storage."
     else
-        echo "[ERROR] Failed to copy Custom Nodes bundle to '/root/ComfyUI/custom_nodes'" >&2
-        exit 1
+        touch /root/ComfyUI/custom_nodes/.image-nodes-copying
+        # 'cp --archive': all file timestamps and permissions will be preserved
+        # 'cp --update=none': do not overwrite
+        if cp --archive --update=none "/default-comfyui-bundle/ComfyUI/custom_nodes/." "/root/ComfyUI/custom_nodes/" ; then
+            touch /root/ComfyUI/custom_nodes/.image-nodes-initialized
+            rm -f /root/ComfyUI/custom_nodes/.image-nodes-copying
+            echo "[INFO] Setting up Custom Nodes..."
+            echo "[INFO] Using image-bundled Custom Nodes (copied to workdir)."
+        else
+            echo "[ERROR] Failed to copy Custom Nodes bundle to '/root/ComfyUI/custom_nodes'" >&2
+            exit 1
+        fi
     fi
 else
     echo "[INFO] Using existing Custom Nodes in user storage..."
 fi
+startup_stage "Custom nodes setup"
 
 # Run user's pre-start script
 cd /root
@@ -58,10 +78,11 @@ else
     chmod +x /root/user-scripts/pre-start.sh
     source /root/user-scripts/pre-start.sh
 fi ;
+startup_stage "User pre-start script"
 
 
 if [ -d "/root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data" ] && [ ! -f "/root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data/prompts.sqlite3" ] ; then
-    mv /default-comfyui-bundle/prompts.sqlite3 /root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data/prompts.sqlite3
+    cp --archive --no-clobber /default-comfyui-bundle/prompts.sqlite3 /root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data/prompts.sqlite3
 else
     echo "[INFO] Using existing ComfyUI prompts.sqlite3 in user storage..."
 fi
@@ -116,8 +137,15 @@ export PIP_USER=true
 export PATH="${PATH}:/root/.local/bin"
 # Suppress [WARNING: Running pip as the 'root' user]
 export PIP_ROOT_USER_ACTION=ignore
+# Defaults can be overridden explicitly by the user's environment/pre-start script.
+export TIPO_NO_AUTO_INSTALL="${TIPO_NO_AUTO_INSTALL:-1}"
+
+# Existing custom_nodes volumes retain old source after an image upgrade.
+# Apply the same idempotent fix to that source without replacing user config.
+python3.13 /runner-scripts/patch-startup.py --manager --nodes-dir /root/ComfyUI/custom_nodes
+startup_stage "Startup compatibility fixes"
 
 cd /root
 
 # Note the specified python command
-python3.13 ./ComfyUI/main.py --listen --port 8188 --enable-manager --enable-manager-legacy-ui ${CLI_ARGS}
+exec python3.13 ./ComfyUI/main.py --listen --port 8188 --enable-manager --enable-manager-legacy-ui ${CLI_ARGS}

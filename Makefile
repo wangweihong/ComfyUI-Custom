@@ -14,11 +14,15 @@ TORCH_CUDA_ARCH_LIST ?= 8.0;8.6;10.0;12.0;12.0+PTX
 DATE := $(shell date +%Y%m%d)
 
 #  Model Path
-MODEL_PARENT ?= /media/wwhvw/A63032EE3032C5595/comfyui-docker/storage-models 
+MODEL_PARENT ?= /media/wwhvw/A63032EE3032C5595/comfyui-docker/storage-models
 OUTPUT_PARENT ?= /media/wwhvw/备份/comfyui
 
 # Test Port
 TEST_PORT ?= 8188
+# Reuse dependencies/nodes/cache across test container recreations.
+TEST_STORAGE_ROOT ?= $(HOME)/.local/share/comfyui-custom/tests
+# Set true only when deliberately measuring initialization with empty storage.
+COLD_START ?= false
 
 
 OFFLINE_MODE ?= false
@@ -88,6 +92,7 @@ help:
 	@echo "  make push-all              - Build and push all components"
 	@echo "  make clean-all             - Remove all component images"
 	@echo "  make test-all              - Run tests for all components"
+	@echo "  Test storage: TEST_STORAGE_ROOT=$(TEST_STORAGE_ROOT) (set COLD_START=true for fresh storage)"
 	@echo "  make build-list LIST=cu130-megapak-pt211,cu130-slim"
 	@echo "  IMAGE_NAME=test make build-cu130-megapak-pt211"
 	@echo "  IMAGE_NAME=test MODEL_PARENT=/media/wwhvw/A63032EE3032C5591/comfyui-docker/storage-models   make test-cu130-megapak-pt211
@@ -158,20 +163,24 @@ clean-$(1):
 
 test-$(1): 
 	@COMPONENT_TAG="$(call get_component_tag,$(1))"; \
-	TEST_DIR=$$$$(mktemp -d -t comfyui-test-XXXXXX); \
-	echo "Using temporary directory: $$$$TEST_DIR"; \
-	mkdir -p $$$$TEST_DIR/storage-cache/dot-cache \
-	         $$$$TEST_DIR/storage-cache/dot-config \
-	         $$$$TEST_DIR/storage-nodes/dot-local \
-	         $$$$TEST_DIR/storage-nodes/custom_nodes \
-	         $$$$TEST_DIR/storage-models/models \
-	         $$$$TEST_DIR/storage-models/hf-hub \
-	         $$$$TEST_DIR/storage-models/torch-hub \
-	         $$$$TEST_DIR/storage-models/u2net \
-	         $$$$TEST_DIR/storage-user/input \
-	         $$$$TEST_DIR/storage-user/output \
-	         $$$$TEST_DIR/storage-user/user-profile \
-	         $$$$TEST_DIR/storage-user/user-scripts; \
+	TEST_DIR="$(TEST_STORAGE_ROOT)/$$$$COMPONENT_TAG"; \
+	if [ "$(COLD_START)" = "true" ]; then \
+		mkdir -p "$(TEST_STORAGE_ROOT)"; \
+		TEST_DIR=$$$$(mktemp -d "$(TEST_STORAGE_ROOT)/$$$$COMPONENT_TAG-cold-XXXXXX"); \
+	fi; \
+	echo "Using storage directory: $$$$TEST_DIR"; \
+	mkdir -p "$$$$TEST_DIR/storage-cache/dot-cache" \
+	         "$$$$TEST_DIR/storage-cache/dot-config" \
+	         "$$$$TEST_DIR/storage-nodes/dot-local" \
+	         "$$$$TEST_DIR/storage-nodes/custom_nodes" \
+	         "$$$$TEST_DIR/storage-models/models" \
+	         "$$$$TEST_DIR/storage-models/hf-hub" \
+	         "$$$$TEST_DIR/storage-models/torch-hub" \
+	         "$$$$TEST_DIR/storage-models/u2net" \
+	         "$$$$TEST_DIR/storage-user/input" \
+	         "$$$$TEST_DIR/storage-user/output" \
+	         "$$$$TEST_DIR/storage-user/user-profile" \
+	         "$$$$TEST_DIR/storage-user/user-scripts"; \
 	echo "Starting container for component: $(1)..."; \
 	HPROXY=""; \
 	HSPROXY=""; \
@@ -198,6 +207,7 @@ test-$(1):
 	  -v "$$$$TEST_DIR/storage-cache/dot-config:/root/.config" \
 	  -v "$$$$TEST_DIR/storage-nodes/dot-local:/root/.local" \
 	  -v "$$$$TEST_DIR/storage-nodes/custom_nodes:/root/ComfyUI/custom_nodes" \
+	  -v "$$$$TEST_DIR/storage-user/user-profile:/root/ComfyUI/user" \
 	  -v "$(MODEL_PARENT)/models:/root/ComfyUI/models" \
 	  -v "$(MODEL_PARENT)/u2net:/root/.u2net" \
 	  -v "$(MODEL_PARENT)/comfyui_controlnet_aux/ckpts:/root/ComfyUI/custom_nodes/comfyui_controlnet_aux/ckpts" \
@@ -217,9 +227,7 @@ test-$(1):
 	  -e HTTPS_PROXY=$(HSPROXY) \
 	  -e HF_ENDPOINT="https://hf-mirror.com" \
 	  -e CLI_ARGS=$(CLI_ARGS) \
-	  $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG; \
-	echo "Cleaning up temporary directory: $$$$TEST_DIR"; \
-	#rm -rf $$$$TEST_DIR
+	  $(REGISTRY)/$(IMAGE_NAME):$$$$COMPONENT_TAG
 
 simpletest-$(1): 
 	@COMPONENT_TAG="$(call get_component_tag,$(1))"; \

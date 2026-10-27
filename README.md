@@ -1,4 +1,19 @@
 # README
+
+## 启动速度修复
+
+`cu130-megapak-pt211` 在构建阶段安装 TIPO 与 Discord voice 依赖，修正 LLM_party 的 extras 包检测及 Manager 的系统包查询。已有节点卷会在启动时应用同样的兼容补丁，保留用户配置。TIPO 默认禁止自动安装依赖，可显式设置 `TIPO_NO_AUTO_INSTALL=0` 恢复上游行为。
+
+修改需要重新构建镜像并重建容器后生效：
+
+```bash
+make build-cu130-megapak-pt211
+```
+
+Makefile 测试默认复用 `~/.local/share/comfyui-custom/tests/<镜像标签>`，可用 `TEST_STORAGE_ROOT` 指定其他目录；只有设置 `COLD_START=true` 才新建独立存储。启动日志新增 `[STARTUP]` 分阶段计时，镜像新增 HTTP 健康检查。
+
+详细诊断、迁移和验证记录见 [启动分析](cu130-megapak-pt211/STARTUP_ANALYSIS.md)。
+
 ## 项目介绍
     本项目是一个基于 [yanwk/ComfyUI](https://github.com/yanwk/ComfyUI)的自定义节点集合，用于扩展 ComfyUI 功能。
 

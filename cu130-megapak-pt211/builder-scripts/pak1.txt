@@ -38,6 +38,8 @@ comfy_env
 nvidia-vfx
 
 # llm
+# Resolve startup dependencies while building, before runtime network access.
+-r startup-requirements.txt
 openai
 aisuite
 langchain_community

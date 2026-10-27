@@ -135,7 +135,7 @@ RUN pip list --format=freeze \
 # Additional custom nodes and dependencies
 RUN bash /builder-scripts/generate-nodes.sh
 RUN --mount=type=cache,target=/root/.cache/pip \
-    pip install \
+    PIP_USER=false pip install \
         -c /builder-scripts/constraints.txt \
         -r /builder-scripts/additional-pak.txt \
         -r /builder-scripts/pak1.txt
@@ -206,10 +206,20 @@ RUN df -h \
 COPY default/comfy.settings.json /default-comfyui-bundle/ComfyUI/user/default/comfy.settings.json
 COPY runner-scripts/.  /runner-scripts/
 
+# Apply after all package installs and both online/offline node-copy paths.
+RUN python3.13 /runner-scripts/patch-startup.py --manager \
+        --nodes-dir /default-comfyui-bundle/ComfyUI/custom_nodes \
+    && python3.13 -c 'import kgen, discord, nacl, davey'
+
+# Dependencies are bundled; TIPO must not resolve/download them at startup.
+ENV TIPO_NO_AUTO_INSTALL=1
+
 USER root
 WORKDIR /root
 EXPOSE 8188
 ENV CLI_ARGS=""
+HEALTHCHECK --interval=10s --timeout=5s --start-period=120s --retries=3 \
+    CMD python3.13 -c 'import urllib.request; urllib.request.urlopen("http://127.0.0.1:8188/", timeout=3).close()'
 CMD ["bash","/runner-scripts/entrypoint.sh"]
 
 # ToolBox owns nodes, examples and docs in both dependency variants.
