@@ -29,7 +29,7 @@ Particular to this `cu130-megapak-pt211` image:
 ** FastVideo
 
 * Optional at image build time:
-** link:3DGS.md[3DGS runtime dependencies: PyCOLMAP CPU + Brush], enabled with `INSTALL_3DGS=true` (default: `false`; image tag suffix: `-3dgs`). ToolBox always supplies nodes, workflows and docs. Model weights and device drivers are not bundled. There is no runtime installation switch.
+** link:../README.md[3DGS runtime dependencies: PyCOLMAP CPU + Brush], enabled with `INSTALL_3DGS=true` (default: `false`; image tag suffix: `-3dgs`). ToolBox always supplies nodes, workflows and docs. Model weights and device drivers are not bundled. There is no runtime installation switch.
 
 * With:
 ** Python 3.13 (with GIL)

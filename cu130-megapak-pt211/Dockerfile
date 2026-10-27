@@ -207,6 +207,8 @@ COPY default/comfy.settings.json /default-comfyui-bundle/ComfyUI/user/default/co
 COPY runner-scripts/.  /runner-scripts/
 
 # Apply after all package installs and both online/offline node-copy paths.
+# 修复 ComfyUI-Manager：PIP_USER=true 导致 pip list 漏查系统包，误报缺少 PyTorch/前端并触发依赖修复。
+# 修复 comfyui_LLM_party：将 py-cord[voice] 当作发行包名检测，导致启动时重复执行 pip install。
 RUN python3.13 /runner-scripts/patch-startup.py --manager \
         --nodes-dir /default-comfyui-bundle/ComfyUI/custom_nodes \
     && python3.13 -c 'import kgen, discord, nacl, davey'
