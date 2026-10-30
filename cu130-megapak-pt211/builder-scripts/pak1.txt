@@ -38,9 +38,7 @@ comfy_env
 nvidia-vfx
 
 # llm
-# Resolve startup dependencies while building, before runtime network access.
-py-cord[voice]==2.8.1
-tipo-kgen==0.3.1
+
 openai
 aisuite
 langchain_community
