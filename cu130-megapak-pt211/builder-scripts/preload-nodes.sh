@@ -2,9 +2,6 @@
 
 set -euo pipefail
 
-# gcs() {
-#     git clone --depth=1 --no-tags --recurse-submodules --shallow-submodules "$@"
-# }
 # 带有重试机制的克隆函数
 gcs() {
     local url="$1"
@@ -80,9 +77,15 @@ cd /default-comfyui-bundle/ComfyUI/custom_nodes
 gcs https://github.com/wangweihong/ComfyUI-ToolBox.git
 gcs https://github.com/wangweihong/comfyui-pose-gallery.git
 gcs https://github.com/wangweihong/comfyui-costume-gallery.git
+gcs https://github.com/wangweihong/comfyui-hairstyle-gallery.git
+gcs https://github.com/wangweihong/comfyui-portrait-gallery
+gcs https://github.com/wangweihong/comfyui-cinematic-gallery
+gcs https://github.com/wangweihong/comfyui-tts-gallery
+
 # Pin the reviewed 3DGS source so both dependency variants have the same nodes/resources.
 git -C ComfyUI-ToolBox fetch --depth=1 origin 1a131682cfe467f2211626007c63c7678f6c3db9
 git -C ComfyUI-ToolBox checkout --detach 1a131682cfe467f2211626007c63c7678f6c3db9
+
 
 gcs https://github.com/lucafoscili/lf-nodes.git
 
@@ -124,7 +127,7 @@ gcs https://github.com/Zlata-Salyukova/Comfy-Canvas.git
 gcs https://github.com/laurigates/comfyui-gallery-loader
 
 # 支持image browser以及查看资产元数据
-gcs https://github.com/laurigates/comfyui-image-browser.git
+# gcs https://github.com/laurigates/comfyui-image-browser.git
 
 # PCB版连线
 gcs https://github.com/vtokic/comfyui-cable-management.git
@@ -165,6 +168,9 @@ gcs https://github.com/gseth/ControlAltAI-Nodes.git
 
 # 像素修复
 gcs https://github.com/Mozer/ComfyUI-PixelDriftFix
+
+# 像素生成
+gcs github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner
 
 # -----------------------------------------------------------------------------
 # A05 遮罩、人物比例与人像修饰
@@ -541,4 +547,6 @@ gcs https://github.com/Saganaki22/ComfyUI-Breeze-TTS-2
 # fishs2
 #gcs https://github.com/Saganaki22/ComfyUI-FishAudioS2.git
 
+# drama3
+gcs https://github.com/PedroMarinhoDev/ComfyUI-Drama3
 echo "[INFO] Additional custom nodes downloaded successfully"
