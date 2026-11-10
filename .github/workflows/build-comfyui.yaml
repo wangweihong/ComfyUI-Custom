@@ -43,43 +43,112 @@ jobs:
         run: python3 -m unittest discover -s cu130-megapak-pt211/tests -v
 
       # === 前置清理与状态打印 ===
+      # - name: Cleanup and System Check
+      #   run: |
+      #     echo "========================================================="
+      #     echo "【清理前】系统内存与磁盘状态："
+      #     echo "========================================================="
+      #     free -h
+      #     echo ""
+      #     df -h
+      #     echo ""
+
+      #     echo "========================================================="
+      #     echo "开始清理不需要的系统组件..."
+      #     echo "========================================================="
+
+      #     # 1. 移除不常用的庞大软件及工具包 (大型语言环境、.NET、Android SDK等)
+      #     sudo rm -rf /usr/share/dotnet
+      #     sudo rm -rf /usr/local/lib/android
+      #     sudo rm -rf /opt/ghc
+      #     sudo rm -rf /opt/hostedtoolcache/CodeQL
+
+      #     # 2. 清理系统软件包缓存
+      #     sudo apt-get remove -y '^dotnet-.*' '^llvm-.*' 'php.*' 'google-chrome-stable' 'microsoft-edge-stable' azure-cli google-cloud-sdk mono-devel powershell firefox
+      #     sudo apt-get autoremove -y
+      #     sudo apt-get clean
+
+      #     # 3. 清理 Docker 默认残留（GitHub 环境中可能存在一些基础镜像缓存）
+      #     docker rmi $(docker images -q) 2>/dev/null || true
+      #     docker builder prune -a -f
+
+      #     echo "========================================================="
+      #     echo "【清理后】系统内存与磁盘状态："
+      #     echo "========================================================="
+      #     free -h
+      #     echo ""
+      #     df -h
+      #     echo "========================================================="
       - name: Cleanup and System Check
+        shell: bash
         run: |
+          set -euo pipefail
+
           echo "========================================================="
-          echo "【清理前】系统内存与磁盘状态："
+          echo "【系统信息】"
+          echo "========================================================="
+          cat /etc/os-release
+
+          echo "========================================================="
+          echo "【清理前】系统内存与磁盘状态"
           echo "========================================================="
           free -h
-          echo ""
           df -h
-          echo ""
 
           echo "========================================================="
-          echo "开始清理不需要的系统组件..."
+          echo "【1】清理不需要的大型 SDK 和工具包"
           echo "========================================================="
 
-          # 1. 移除不常用的庞大软件及工具包 (大型语言环境、.NET、Android SDK等)
+          # .NET SDK
           sudo rm -rf /usr/share/dotnet
+
+          # Android SDK
           sudo rm -rf /usr/local/lib/android
+
+          # Haskell GHC
           sudo rm -rf /opt/ghc
+
+          # CodeQL
           sudo rm -rf /opt/hostedtoolcache/CodeQL
 
-          # 2. 清理系统软件包缓存
-          sudo apt-get remove -y '^dotnet-.*' '^llvm-.*' 'php.*' 'google-chrome-stable' 'microsoft-edge-stable' azure-cli google-cloud-sdk mono-devel powershell firefox
-          sudo apt-get autoremove -y
+          # Swift SDK
+          sudo rm -rf /usr/share/swift
+
+          echo "========================================================="
+          echo "【2】清理 APT 缓存"
+          echo "========================================================="
+
           sudo apt-get clean
 
-          # 3. 清理 Docker 默认残留（GitHub 环境中可能存在一些基础镜像缓存）
-          docker rmi $(docker images -q) 2>/dev/null || true
+          echo "========================================================="
+          echo "【3】清理 Docker 镜像及构建缓存"
+          echo "========================================================="
+
+          # 清理未被容器使用的镜像
+          docker image prune -a -f
+
+          # 清理 Docker BuildKit 缓存
           docker builder prune -a -f
 
           echo "========================================================="
-          echo "【清理后】系统内存与磁盘状态："
-          echo "========================================================="
-          free -h
-          echo ""
-          df -h
+          echo "【4】清理临时文件"
           echo "========================================================="
 
+          # 清理当前用户的 pip 缓存
+          python -m pip cache purge || true
+
+          # 清理当前用户的 npm 缓存
+          npm cache clean --force || true
+
+          echo "========================================================="
+          echo "【清理后】系统内存与磁盘状态"
+          echo "========================================================="
+          free -h
+          df -h
+
+          echo "========================================================="
+          echo "系统清理完成"
+          echo "========================================================="
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
