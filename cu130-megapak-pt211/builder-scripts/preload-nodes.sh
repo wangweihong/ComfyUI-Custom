@@ -379,7 +379,7 @@ gcs https://github.com/SparknightLLC/ComfyUI-ImageAutotone.git
 
 # krea2像素修复
 # https://www.reddit.com/r/StableDiffusion/comments/1wi0mpd/krea_2_pixel_art_loras_32x32_64x64_128x128/
-gcs https://github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner
+#gcs https://github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner
 
 # -----------------------------------------------------------------------------
 # B06 FLUX.2 Klein：编辑、条件控制与采样
