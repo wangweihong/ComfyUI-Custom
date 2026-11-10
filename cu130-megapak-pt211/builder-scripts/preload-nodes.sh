@@ -170,7 +170,7 @@ gcs https://github.com/gseth/ControlAltAI-Nodes.git
 gcs https://github.com/Mozer/ComfyUI-PixelDriftFix
 
 # 像素生成
-gcs github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner
+gcs https://github.com/envy-ai/ComfyUI-Krea2-Pixel-Art-Refiner
 
 # -----------------------------------------------------------------------------
 # A05 遮罩、人物比例与人像修饰
