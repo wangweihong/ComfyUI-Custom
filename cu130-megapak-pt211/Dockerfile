@@ -201,24 +201,24 @@ RUN pip3 uninstall xformers -y
 # offline nodes
 COPY _nodes/. /default-comfyui-bundle/ComfyUI/custom_nodes/
 
-# Spark 的 0.2.37 wheel 仅提供私有 SM120/CUDA 13.0 算子，绝不通过 pip 安装或覆盖核心 kitchen。
-# 只提取 CUDA 包装和扩展，去掉全局注册；核心继续使用 ComfyUI requirements.txt 指定的版本。
+# 安装官方隔离 spark-h3-kitchen：保留 Spark、INT8 和 QKV helper API，核心 kitchen 不变。
+# 在线/离线使用同一份固定 SHA256 的官方 SM120/CUDA 13.0 发布包。
 RUN --mount=type=bind,source=offline-cache/spark,target=/spark-wheels,ro <<'SH'
 set -eu
-wheel=comfy_kitchen-0.2.37+spark.h3.sm120.cu130.1-cp312-abi3-linux_x86_64.whl
+archive=ComfyUI-Spark-H3-0.2.0-linux-x86_64-sm120-cu130.zip
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 case "$OFFLINE_MODE" in
-    true) cp "/spark-wheels/$wheel" "$work/$wheel" ;;
+    true) cp "/spark-wheels/$archive" "$work/$archive" ;;
     false)
         export https_proxy="${HTTPS_PROXY:-${https_proxy:-}}"
         wget --no-verbose --https-only --tries=3 --timeout=120 \
-            -O "$work/$wheel" \
-            "https://github.com/wangweihong/Wheels-Containerfiles/releases/download/comfy-kitchen/$wheel"
+            -O "$work/$archive" \
+            "https://github.com/zechengtang/Spark-H3/releases/download/comfyui-v0.2.0/$archive"
         ;;
     *) echo 'OFFLINE_MODE must be true or false for Spark dependencies' >&2; exit 1 ;;
 esac
-python3.13 /builder-scripts/install-spark-backend.py --wheel "$work/$wheel"
+python3.13 /builder-scripts/install-spark-backend.py --archive "$work/$archive"
 SH
 ################################################################################
 RUN df -h \
@@ -231,7 +231,7 @@ COPY runner-scripts/.  /runner-scripts/
 # Apply after all package installs and both online/offline node-copy paths.
 # 修复 ComfyUI-Manager：PIP_USER=true 导致 pip list 漏查系统包，误报缺少 PyTorch/前端并触发依赖修复。
 # 修复 comfyui_LLM_party：将 py-cord[voice] 当作发行包名检测，导致启动时重复执行 pip install。
-# 修复 Spark-H3：将 Spark 调用接到私有 CUDA 扩展，避免降级核心 comfy-kitchen。
+# 兼容旧 Spark 节点卷：调用官方隔离后端；新版已使用隔离命名空间，无需改写。
 RUN python3.13 /runner-scripts/patch-startup.py --manager \
         --nodes-dir /default-comfyui-bundle/ComfyUI/custom_nodes \
     && python3.13 -c 'import kgen, discord, nacl, davey'
@@ -239,7 +239,7 @@ RUN python3.13 /runner-scripts/patch-startup.py --manager \
 # 检查真正的核心导入链，防止节点依赖降级导致镜像构建成功但服务无法启动。
 # 使用 CPU 模式，构建时不依赖 GPU 或宿主机驱动。
 RUN cd /default-comfyui-bundle/ComfyUI \
-    && python3.13 -c 'from comfy.cli_args import args; args.cpu = True; import execution; import nodes; from comfy_kitchen.int8_decode import Int8DecodeCache; import comfyui_spark_cuda as spark; assert callable(spark.spark_attn) and hasattr(spark._C, "spark_attn")'
+    && python3.13 -c 'from comfy.cli_args import args; args.cpu = True; import execution; import nodes; from comfy_kitchen.int8_decode import Int8DecodeCache; import spark_h3_kitchen as kitchen; from spark_h3_kitchen.backends import cuda as spark; assert callable(spark.spark_attn) and hasattr(spark._C, "spark_attn"); assert all(callable(getattr(kitchen, name)) for name in ("int8_attention", "prequantize_int8_attention", "int8_attention_from_prequantized"))'
 
 # Dependencies are bundled; TIPO must not resolve/download them at startup.
 ENV TIPO_NO_AUTO_INSTALL=1

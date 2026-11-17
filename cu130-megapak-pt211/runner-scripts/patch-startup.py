@@ -63,20 +63,25 @@ def patch_llm_party(path: Path) -> None:
 
 def patch_spark(path: Path) -> None:
     original = path.read_text(encoding="utf-8")
-    # Core kitchen retains int8_decode and its CUDA registry; Spark uses only
-    # its separately named private extension from the older custom wheel.
-    patched = replace_once(
-        original,
-        "from comfy_kitchen.backends.cuda import spark_attn",
-        "from comfyui_spark_cuda import spark_attn",
-        path,
-    )
-    patched = replace_once(
-        patched,
-        'controller.backend = "comfy-kitchen-spark-global"',
-        'controller.backend = "comfy-kitchen-spark-private"',
-        path,
-    )
+    # v0.2.0+ already uses the complete official isolated package. Older user
+    # volumes may still use core kitchen or our former single-module extraction.
+    isolated = "spark_h3_kitchen.backends.cuda"
+    legacy = {"comfy_kitchen.backends.cuda", "comfyui_spark_cuda"}
+    tree = ast.parse(original, filename=str(path))
+    imports = [node for node in ast.walk(tree)
+               if isinstance(node, ast.ImportFrom)
+               and node.level == 0 and node.module in legacy | {isolated}
+               and len(node.names) == 1 and node.names[0].name == "spark_attn"]
+    if len(imports) != 1:
+        raise RuntimeError(f"Unsupported Spark backend in {path}: expected one known spark_attn import")
+    node = imports[0]
+    if node.module == isolated:
+        return
+    statement = ast.get_source_segment(original, node)
+    patched = original.replace(statement, statement.replace(node.module, isolated, 1), 1)
+    for label in ("comfy-kitchen-spark-global", "comfy-kitchen-spark-private"):
+        patched = patched.replace(f'controller.backend = "{label}"',
+                                  'controller.backend = "spark-h3-kitchen-isolated"')
     save_patch(path, original, patched)
 
 

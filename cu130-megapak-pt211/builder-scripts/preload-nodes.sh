@@ -307,6 +307,9 @@ gcs https://github.com/wangweihong/ComfyUI-Fantastic-MiniMaxH3-PromptBuilder
 
 # minimax 加速方案
 gcs https://github.com/zechengtang/Spark-H3.git
+# Pair the isolated backend with reviewed source instead of tracking moving main.
+git -C Spark-H3 fetch --depth=1 origin 8edfc07033d97dce29e83f51749d2c435556b91b
+git -C Spark-H3 checkout --detach 8edfc07033d97dce29e83f51749d2c435556b91b
 gcs https://github.com/veda-sparse/Veda-on-ComfyUI.git
 
 # ref mode

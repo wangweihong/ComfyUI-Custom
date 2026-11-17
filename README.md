@@ -53,6 +53,10 @@ cu130-megapak-pt211 集成 FlashVSR+ Turbo / Triton 和本地 2K、4K、分块 8
 
 ## Spark H3 后端
 
-核心 `comfy-kitchen` 沿用 ComfyUI 要求的版本。Spark 的 SM120 / CUDA 13.0 定制算子以 `comfyui_spark_cuda` 私有包提供，不替换核心依赖或注册为全局 CUDA 后端；已有 Spark 节点目录在启动时应用相同适配。
+核心 `comfy-kitchen` 沿用 ComfyUI 要求的版本。Spark 采用官方独立发行包 `spark-h3-kitchen`，使用 `spark_h3_kitchen` 命名空间，完整提供 Spark、INT8 attention 和 CUDA helper API，不替换核心依赖。在线源码固定为 `8edfc07033d97dce29e83f51749d2c435556b91b`，不再跟随主分支漂移。
 
-离线构建需将 `comfy_kitchen-0.2.37+spark.h3.sm120.cu130.1-cp312-abi3-linux_x86_64.whl` 放入 `cu130-megapak-pt211/offline-cache/spark/`。在线和离线构建均校验固定 SHA256；不要将该旧 wheel 全局 pip 安装到依赖 0.2.39 的环境。
+构建使用 [Spark-H3 v0.2.0 官方发布包](https://github.com/zechengtang/Spark-H3/releases/tag/comfyui-v0.2.0) 中的 SM120 / CUDA 13.0 / `0.2.37` 隔离后端。在线和离线构建均校验 ZIP 的固定 SHA256，并使用 `--no-index --no-deps` 安装完整 wheel。构建时检查核心导入、Spark 原生入口以及 INT8 接口；无需 GPU 即可执行该导入检查。
+
+离线构建需将 `ComfyUI-Spark-H3-0.2.0-linux-x86_64-sm120-cu130.zip` 放入 `cu130-megapak-pt211/offline-cache/spark/`，并将离线 `Spark-H3` 源码快照更新到上述固定提交。旧 `comfy_kitchen-0.2.37+spark.h3...whl` 不再作为构建材料。
+
+启动时兼容持久化卷中的旧 Spark：把旧核心导入或旧 `comfyui_spark_cuda` 导入改接到官方隔离后端；新版隔离导入保持原样。未知或重复的导入结构仍明确报错，防止构建成功却接错后端。已有节点卷不会自动升级其他 Spark 源码或改写工作流；需要新版功能时需单独升级该卷中的插件。
