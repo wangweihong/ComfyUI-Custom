@@ -81,6 +81,7 @@ gcs https://github.com/wangweihong/comfyui-hairstyle-gallery.git
 gcs https://github.com/wangweihong/comfyui-portrait-gallery
 gcs https://github.com/wangweihong/comfyui-cinematic-gallery
 gcs https://github.com/wangweihong/comfyui-tts-gallery
+gcs https://github.com/wangweihong/ComfyUI-WorkflowManager
 
 # Pin the reviewed 3DGS source so both dependency variants have the same nodes/resources.
 git -C ComfyUI-ToolBox fetch --depth=1 origin 1a131682cfe467f2211626007c63c7678f6c3db9
@@ -549,4 +550,10 @@ gcs https://github.com/Saganaki22/ComfyUI-Breeze-TTS-2
 
 # drama3
 gcs https://github.com/PedroMarinhoDev/ComfyUI-Drama3
+
+# moss
+gcs https://github.com/slmonker/ComfyUI-MOSS-Merge-Presets
+
 echo "[INFO] Additional custom nodes downloaded successfully"
+
+
