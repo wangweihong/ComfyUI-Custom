@@ -137,7 +137,7 @@ RUN pip list --format=freeze \
 # Additional custom nodes and dependencies
 RUN bash /builder-scripts/generate-nodes.sh
 RUN --mount=type=cache,target=/root/.cache/pip \
-    PIP_USER=false pip install \
+    PIP_USER=false python3.13 -m pip install \
         -c /builder-scripts/constraints.txt \
         -r /builder-scripts/additional-pak.txt \
         -r /builder-scripts/pak1.txt

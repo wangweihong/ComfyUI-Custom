@@ -39,6 +39,12 @@ nvidia-vfx
 
 # llm
 
+# Startup imports: kgen, discord, nacl and davey.
+tipo-kgen==0.3.1
+py-cord[voice]==2.8.1
+PyNaCl==1.6.2
+davey==0.1.7
+
 openai
 aisuite
 langchain_community

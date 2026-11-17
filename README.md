@@ -4,6 +4,8 @@
 
 `cu130-megapak-pt211` 在构建阶段安装 TIPO 与 Discord voice 依赖，修正 LLM_party 的 extras 包检测及 Manager 的系统包查询。已有节点卷会在启动时应用同样的兼容补丁，保留用户配置。TIPO 默认禁止自动安装依赖，可显式设置 `TIPO_NO_AUTO_INSTALL=0` 恢复上游行为。
 
+启动检查所需包直接声明于 `cu130-megapak-pt211/builder-scripts/pak1.txt`：`tipo-kgen` 提供 `kgen`，`py-cord[voice]` 提供 `discord`，并固定 `PyNaCl`（`nacl`）与 `davey`。构建使用运行 ComfyUI 的同一 Python 3.13 安装到系统环境，不依赖基础镜像是否预装这些包。
+
 修改需要重新构建镜像并重建容器后生效：
 
 ```bash
