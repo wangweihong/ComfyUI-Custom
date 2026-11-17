@@ -83,9 +83,9 @@ gcs https://github.com/wangweihong/comfyui-cinematic-gallery
 gcs https://github.com/wangweihong/comfyui-tts-gallery
 gcs https://github.com/wangweihong/ComfyUI-WorkflowManager
 
-# Pin the reviewed 3DGS source so both dependency variants have the same nodes/resources.
-git -C ComfyUI-ToolBox fetch --depth=1 origin 1a131682cfe467f2211626007c63c7678f6c3db9
-git -C ComfyUI-ToolBox checkout --detach 1a131682cfe467f2211626007c63c7678f6c3db9
+# Include 3DGS and the standalone tb switches/primitives in both dependency variants.
+git -C ComfyUI-ToolBox fetch --depth=1 origin f2ff93b75b52bfc258463a37f046f1aff6006b93
+git -C ComfyUI-ToolBox checkout --detach f2ff93b75b52bfc258463a37f046f1aff6006b93
 
 
 gcs https://github.com/lucafoscili/lf-nodes.git

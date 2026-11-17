@@ -12,6 +12,18 @@ make build-cu130-megapak-pt211
 
 Makefile 测试默认复用 `~/.local/share/comfyui-custom/tests/<镜像标签>`，可用 `TEST_STORAGE_ROOT` 指定其他目录；只有设置 `COLD_START=true` 才新建独立存储。启动日志新增 `[STARTUP]` 分阶段计时，镜像新增 HTTP 健康检查。
 
+### Pixaroma 图片扫描与 ToolBox 基础节点
+
+`cu130-megapak-pt211` 默认停用 `PixaromaLoadImage`、`PixaromaLoadImageMini`、`PixaromaPromptReader`，避免这些节点在首页查询节点信息时递归扫描素材目录。其他 Pixaroma 功能及 `PixaromaLoadImagesFolder` 批量加载节点保留，Crystools 也保留。
+
+首次启动将镜像中的禁用清单复制到 `/root/user-scripts/disabled-nodes.yaml`（默认挂载为 `storage-user/user-scripts/disabled-nodes.yaml`），并自动追加 `--disabled-nodes-config`。已有清单、`pre-start.sh` 和 `comfy.settings.json` 不会被这一步覆盖；用户脚本或 `CLI_ARGS` 已指定禁用清单时优先使用指定路径，不重复追加参数。清单内容就是生效配置，需要恢复某节点时从清单移除对应名称并重启；`disabled_nodes: []` 可恢复全部三个节点。
+
+使用这些 Pixaroma 节点的已有工作流需先替换节点。停用只阻止节点注册，不跳过整个插件包的导入，也不能消除其他插件的素材扫描。
+
+在线构建将 ToolBox 固定到 `f2ff93b75b52bfc258463a37f046f1aff6006b93`，包含 `tb-switch-any`、`tb-switch-image`、`tb-primitive-integer`、`tb-primitive-string-multiline`。离线构建需自行将 `cu130-megapak-pt211/offline-cache/repos/ComfyUI-ToolBox` 更新到该提交（或包含它的后续版本）；已有持久化节点卷仍按原有规则保留，不会自动替换其源码。上述节点迁移不自动改写工作流。
+
+此项目变更需重新构建镜像并重建容器后生效；不要求改写已有用户脚本。
+
 ## 项目介绍
     本项目是一个基于 [yanwk/ComfyUI](https://github.com/yanwk/ComfyUI)的自定义节点集合，用于扩展 ComfyUI 功能。
 

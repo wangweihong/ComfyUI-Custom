@@ -80,6 +80,19 @@ else
 fi ;
 startup_stage "User pre-start script"
 
+# Configure disabled nodes independently of the user's UI settings and scripts.
+# Existing volumes keep their own list; an explicit CLI_ARGS config takes precedence.
+if [ ! -e "/root/user-scripts/disabled-nodes.yaml" ] && [ ! -L "/root/user-scripts/disabled-nodes.yaml" ]; then
+    mkdir -p /root/user-scripts
+    cp --archive --no-clobber /runner-scripts/disabled-nodes.yaml /root/user-scripts/disabled-nodes.yaml
+    echo "[INFO] Copied image-bundled disabled-node configuration."
+fi
+case " ${CLI_ARGS:-} " in
+    *" --disabled-nodes-config "*|*" --disabled-nodes-config="*) ;;
+    *) export CLI_ARGS="${CLI_ARGS:+${CLI_ARGS} }--disabled-nodes-config /root/user-scripts/disabled-nodes.yaml" ;;
+esac
+startup_stage "Disabled nodes configuration"
+
 
 if [ -d "/root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data" ] && [ ! -f "/root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data/prompts.sqlite3" ] ; then
     cp --archive --no-clobber /default-comfyui-bundle/prompts.sqlite3 /root/ComfyUI/custom_nodes/ComfyUI-ToolBox/data/prompts.sqlite3

@@ -1,0 +1,5 @@
+# Keep the rest of Pixaroma available; these nodes recursively enumerate input.
+disabled_nodes:
+  - PixaromaLoadImage
+  - PixaromaLoadImageMini
+  - PixaromaPromptReader
